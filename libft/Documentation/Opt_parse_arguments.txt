@@ -1,0 +1,141 @@
+/******************
+**	Get_Arg_Opt  **
+*******************
+** *
+**	1)	char 	**init_define();
+**	2)	t_opt	*opt_parse_arguments(int ac, char **av, char **init_define);
+**	3)	void	opt_print_error(char **av, t_opt **e);
+**	4)	void	opt_check_options(t_opt **e);
+**	5)	void	opt_free(t_opt **e);
+** *
+** For use it, you have to call the fonction "opt_parse_arguments()".
+** This fonction return a structure how content :
+** *
+** typedef struct		s_opt
+**	{
+**		char			**define;	//Content all define in tab form;
+**		int				position;	//Gives the position of "--"
+**		char			*opt;		//char *short_option
+**		char			*l_opt;		//char *long_options separate by space ' '
+**		int 			nb_arg;		//Number of argv before "--"
+**		char			**s_arg;	//Tab of argv before "--"
+**		char			bad_char;	//Bad charactere return if bad opt in param
+**		int				error;		//Error signal
+**		int				mark;		//CF bottom.
+**		struct s_opt	*opt_b;		//Content Bool option convertion
+**	}					t_opt;
+** *
+**	"mark" if use for in start of program the state of the arguments
+**	If "mark" ==
+**	ALL_OK			0 // All options are valid and all "**argv" are in "**s_arg"
+**	NO_OPT_OK		1 // There are no options and all "**argv" are in "**s_arg"
+**	BAD_OPT			2 // There is a bad options. Call "opt_print_error()"
+**	OPT_OK_END		3 // Options are valid and "--" was used. So use "nb_arg"
+**						for read the rest of "**argv"
+**	NO_OPT_OK_END	4 // "--" was used and there is NO options. So use "nb_arg"
+**						for read the rest of "**argv"
+** *
+** If "error" ==
+**	NO_ERROR		0 // No error;
+**	ERROR_MALLOC	1 // ERROR MALLOC;
+**	BAD_SHORT_OPT	2 // Bad short_option;
+**	BAD_LONG_OPT	3 // Bad long_option;
+**
+** *
+********
+** *
+**	You HAVE to send *mytab[6] with name, options and error description.
+**
+**	tab[0] = "PROGRAM NAME";
+**	tab[1] = "SHORT_OPTIONS";
+**	tab[2] = "LONG OPTIONS"; -> with space between options.
+**		!!! if there is just one long_options, you have to add space at the end.
+**	tab[3] = "SHORT OPTIONS HELP";
+**	tab[4] = "LONG OPTIONS HELP";
+**	tab[5] = "FILE_HELP"; -> like " [file...]"
+**	*
+**	You can use this function like this:
+**
+**	char		**cd_init_define()
+**	{
+**		char	**mytab;
+**
+**		if(!(mytab = (char**)malloc(sizeof(char*) * 6)))
+**			return (NULL);
+**		mytab[0] = ft_strdup("cd");
+**		mytab[1] = ft_strdup("-LP");
+**		mytab[2] = ft_strdup("");
+**		mytab[3] = ft_strdup(" [-LP]");
+**		mytab[4] = ft_strdup("");
+**		mytab[5] = ft_strdup("[dir]");
+**		return (mytab);
+**	}
+**
+**	Please read bottom for more explanation !
+**	!!!!!!!!!!!!$$				$$$$			$$$$			  $$!!!!!!!!!!!!
+** *
+**		For Long_options you need to make a space ' ' between two options
+**			and another one at the end of declaration "... "
+**
+**		If define[1] and define[2] are empty or has just space and tabulation
+**				the error message for each one will be not set.
+**			So if you call "-l" option instead of define[1] is empty,
+**		  there will not be error message and -l will be an argument.
+** *
+**	!!!!!!!!!!!!$$				$$$$			$$$$			  $$!!!!!!!!!!!!
+** *
+**
+**	For "opt_print_error", use those ones :
+** *
+**		# define PROGRAM_NAME 	"..."
+**		# define SHORT_HELP		" [-ENTER YOU SHORT OPTIONS]"
+**		# define LONG_HELP		" [--ENTER YOUR LONG OPTIONS]"
+**		# define FILE_HELP		" [file ...]"
+**
+**	It can be usefull for lisibilty, but you need to isolate your definition in
+**	a new header for each use, else you will define multiple same definitions
+**
+**	The other way is to hard define when you create chain_array before send it
+**	to opt_parse_arguments()  --> char **init_define;
+**
+** *
+********
+** *
+**	For opt_b you can use "opt_check_options()" after "ft_parse_arguments()" for
+**	transform your options in Bool and accelerate the options's check during
+**	program
+** *
+********
+** *
+**	Use opt_check_last_opt() for check the last options between the twice
+**	in parameters.
+**	All the string will be check from the end and the function return 0 or 1
+**	for the first match of options in parameters.
+** *
+********
+** *
+**	For free the structure you can use "opt_free()". DON'T FORGET IT !
+** *
+********
+** *
+**	Add a new bool for each new option in structure t_bool{}
+**
+**		typedef struct		s_bool
+**		{
+**			bool			a;			// For -a and --all
+**			bool			t;			// For -t and --time
+**		}					t_bool;
+**
+**		Add them in opt_check_options();
+**	This part is usefull for options with short and long declaration like
+** 	-a --all; -t --time; -r --reverse; -R --recursive; ETC.
+**
+**	Call "check_short()" || "check long()" once more for each new option.
+** 	(*e)->opt_b->a = check_short(e, 'a', (*e)->opt_b->a);
+**	(*e)->opt_b->t = check_short(e, 't', (*e)->opt_b->t);
+**
+** 	(*e)->opt_b->a = check_short(e, 'all', (*e)->opt_b->a);
+**	(*e)->opt_b->t = check_short(e, 'time', (*e)->opt_b->t);
+**
+**	Here we can see the same bool for 'a' and "all" or 't' and "time"
+*/
