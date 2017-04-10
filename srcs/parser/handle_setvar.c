@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 21:10:08 by ljohan            #+#    #+#             */
-/*   Updated: 2017/01/20 21:10:40 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/03/01 00:03:50 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	handle_setvar_suite(t_parser *p)
 	pop_state(&(p->states));
 }
 
-void		handle_setvar(t_parser *p)
+void		handle_setvar(t_shell *shell, t_parser *p)
 {
 	char	*var;
 	char	*val;
@@ -32,7 +32,7 @@ void		handle_setvar(t_parser *p)
 	{
 		var = ft_strdup(p->part);
 		ft_strdel(&(p->part));
-		val = parse_normal(p);
+		val = implicit_parse_one(shell, p);
 		if (ft_strcmp(val, "") == 0)
 		{
 			dict_del(p->opts->vars, var);

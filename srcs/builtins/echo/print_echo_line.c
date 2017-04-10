@@ -6,13 +6,14 @@
 /*   By: qrosa <qrosa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/09 16:17:04 by qrosa             #+#    #+#             */
-/*   Updated: 2017/02/21 18:12:07 by qrosa            ###   ########.fr       */
+/*   Updated: 2017/04/07 22:34:29 by nboulaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	print_echo_line(char **args, size_t len_tab, unsigned int tab_position, short options)
+void	print_echo_line(char **args, size_t len_tab,
+			unsigned int tab_position, short options)
 {
 	if (!print_long_options(options))
 		return ;

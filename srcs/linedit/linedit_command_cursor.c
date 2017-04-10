@@ -6,7 +6,7 @@
 /*   By: qrosa <qrosa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/28 17:05:32 by qrosa             #+#    #+#             */
-/*   Updated: 2017/03/27 21:29:43 by qrosa            ###   ########.fr       */
+/*   Updated: 2017/04/07 22:58:18 by qrosa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int						(*g_term_command_cursor[NB_TERM_COMMAND_CURSOR])
 	alt_arrow_down,
 	next_word,
 	previous_word,
-	bridge_maj_down,
 	alt_arrow_up,
 	alt_arrow_down,
 	next_word,
@@ -49,7 +48,6 @@ static const long int	g_term_value_cursor[NB_TERM_COMMAND_CURSOR] = {
 	CAPS_ALT_DOWN,
 	CAPS_ALT_RIGHT,
 	CAPS_ALT_LEFT,
-	CAPS_MAJ_DOWN,
 	CAPS_ALT_UP_LINUX,
 	CAPS_ALT_DOWN_LINUX,
 	CAPS_ALT_RIGHT_LINUX,

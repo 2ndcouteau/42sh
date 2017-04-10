@@ -6,7 +6,7 @@
 /*   By: qrosa <qrosa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 16:54:36 by qrosa             #+#    #+#             */
-/*   Updated: 2017/02/23 14:49:55 by yoko             ###   ########.fr       */
+/*   Updated: 2017/04/07 22:17:17 by nboulaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static void	cpy_pwd(t_dict *env, char **current_pwd)
 	{
 		ft_setenv(env, "PWD", *current_pwd);
 	}
-//	pwd = ft_free_line(&pwd);
 }
 
 static void	set_and_cpy_pwd(t_dict *env, char **current_pwd)

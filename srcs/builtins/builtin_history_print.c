@@ -6,7 +6,7 @@
 /*   By: qrosa <qrosa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 19:14:14 by qrosa             #+#    #+#             */
-/*   Updated: 2017/02/24 23:11:25 by qrosa            ###   ########.fr       */
+/*   Updated: 2017/04/07 21:17:05 by nboulaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	print_all_history(t_history *h, int i)
 	return (SUCCESS);
 }
 
-static void print_n_end(t_history *h, int cpt)
+static void	print_n_end(t_history *h, int cpt)
 {
 	t_head	*ptr;
 	int		len;
@@ -50,7 +50,6 @@ static void print_n_end(t_history *h, int cpt)
 					? GET_NODE((h->head.next), t_history, head) : NULL;
 	}
 }
-
 
 static int	print_n_history(char **tab_arg, t_history *h)
 {

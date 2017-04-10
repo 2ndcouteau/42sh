@@ -6,7 +6,7 @@
 /*   By: amoreilh <amoreilh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 15:17:26 by amoreilh          #+#    #+#             */
-/*   Updated: 2017/03/27 20:44:55 by qrosa            ###   ########.fr       */
+/*   Updated: 2017/04/10 17:36:04 by qrosa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int		ft_endgetlineloop(t_shell *sh, t_input *input, t_autocomp *autoc)
 	return (1);
 }
 
-// get the new inputs
 char	*ft_getline(t_input *input, t_shell *sh)
 {
 	int			i;
@@ -29,9 +28,9 @@ char	*ft_getline(t_input *input, t_shell *sh)
 	char		buf[READBUFSIZE];
 	t_autocomp	autoc;
 
-	if (ft_initreadline(I, sh, &autoc) ==  NULL)		// init the buffer a the new char
+	if (ft_initreadline(I, sh, &autoc) == NULL)
 		return (NULL);
-	if ((i = getline_loop(sh, input, buf, &autoc)) != 0)	// get new inputs
+	if ((i = getline_loop(sh, input, buf, &autoc)) != 0)
 	{
 		if (i == 1)
 			return (ft_strdup("exit"));
@@ -44,11 +43,34 @@ char	*ft_getline(t_input *input, t_shell *sh)
 	return (ret);
 }
 
+char	return_term_resetterm(t_shell *sh, int ret)
+{
+	term_resetterm(sh);
+	return (ret);
+}
+
+char	is_ml_fct(t_shell *sh, t_input *input, char **ptr, char *new)
+{
+	if ((new = ft_getline(&I, sh)) != NULL)
+	{
+		if (!(*ptr))
+			(*ptr) = new;
+		else
+			(*ptr) = (STATE(sh->parser) == ST_HEREDOC && !sh->parser->eof)
+				? ft_strjoinfree((*ptr), ft_strjoinfree(ft_strdup("\n"), new))
+				: ft_strjoinfree((*ptr), new);
+		if (!(*ptr))
+			return (return_term_resetterm(sh, 1));
+	}
+	else
+		return (return_term_resetterm(sh, 2));
+}
+
 char	event_loop(t_shell *sh, char **ptr)
 {
-	t_input input;
-	char	*new;
-	t_redir *red;
+	t_input		input;
+	char		*new;
+	t_redir		*red;
 
 	red = NULL;
 	new = NULL;
@@ -59,41 +81,14 @@ char	event_loop(t_shell *sh, char **ptr)
 	ptr = ((STATE(sh->parser) == ST_HEREDOC) && (red != NULL)) ? &(red->heredoc)
 		: &(sh->parser->orig);
 	if (IS_ML(sh->parser))
-	{
-		if ((new = ft_getline(&I, sh)) != NULL) // get the news inputs
-		{
-			if (!(*ptr))
-				(*ptr) = new;
-			else
-				(*ptr) = (STATE(sh->parser) == ST_HEREDOC && !sh->parser->eof)				// HEREDOC Management
-					? ft_strjoinfree((*ptr), ft_strjoinfree(ft_strdup("\n"), new))
-					: ft_strjoinfree((*ptr), new);
-			if (!(*ptr))
-			{
-				term_resetterm(sh);
-				return (1);
-			}
-		}
-		else
-		{
-			term_resetterm(sh);
-			return (2);
-		}
-	}
+		return (is_ml_fct(sh, input, ptr, new));
 	else if ((*ptr))
 	{
 		free(*ptr);
 		if (!((*ptr) = ft_getline(&I, sh)))
-		{
-			term_resetterm(sh);
-			return (2);
-		}
+			return (return_term_resetterm(sh, 2));
 	}
 	else if (!((*ptr) = ft_getline(&I, sh)))
-	{
-		term_resetterm(sh);
-		return (2);
-	}
-	term_resetterm(sh);
-	return (0);
+		return (return_term_resetterm(sh, 2));
+	return (return_term_resetterm(sh, 0));
 }

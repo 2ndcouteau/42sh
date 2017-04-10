@@ -6,7 +6,7 @@
 /*   By: amoreilh <amoreilh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/24 11:22:22 by amoreilh          #+#    #+#             */
-/*   Updated: 2017/03/23 18:04:19 by qrosa            ###   ########.fr       */
+/*   Updated: 2017/04/10 17:24:33 by qrosa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct	s_autocomp
 	t_compnode	*first;
 }				t_autocomp;
 
-void			ft_initstruct(t_input *input, char mode);
+void			ft_initstruct(t_input *input, t_shell *sh);
 char			*ft_initreadline(t_input *input, t_shell *sh, t_autocomp *autoc);
 
 void			ft_getlistsize(t_autocomp *autoc, t_input *input);

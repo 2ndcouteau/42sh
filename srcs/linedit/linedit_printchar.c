@@ -6,7 +6,7 @@
 /*   By: qrosa <qrosa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 14:56:15 by qrosa             #+#    #+#             */
-/*   Updated: 2017/03/24 20:14:56 by qrosa            ###   ########.fr       */
+/*   Updated: 2017/04/10 16:25:44 by qrosa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int		linedit_printchar(t_input *input, char *buf, char *line)
 {
 	int i;
 
-	if (buf[0] && ft_isprint(buf[0]) && !I->multi)
+	if (buf[0] && ft_isprint(buf[0]))
 	{
 		i = 0;
 		while (ft_isprint(buf[i]) && input->bufpos < (input->buffsize - 1)

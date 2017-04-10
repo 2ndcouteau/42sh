@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 13:33:57 by ljohan            #+#    #+#             */
-/*   Updated: 2017/02/20 19:56:18 by nboulaye         ###   ########.fr       */
+/*   Updated: 2017/02/28 22:44:01 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_parser	*new_parser(t_options *opts)
 	p->opts = opts;
 	p->first_word = 1;
 	p->eof = 0;
+	p->merge = 1;
 	return (p);
 }
 

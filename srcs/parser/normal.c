@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 16:56:34 by ljohan            #+#    #+#             */
-/*   Updated: 2017/02/23 15:00:24 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/02/28 19:18:25 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ char		*handle_normal(t_shell *sh, t_parser *p)
 		return (handle_first_word(sh, p));
 	if ((red = try_redir(sh, p)) != NULL)
 	{
-		if (STATE(p) != ST_CONTINUE)
-		{
+		// if (STATE(p) != ST_CONTINUE) NOTE onemore like
+		// {
 			debug_redir(red);
 			merge_redir(p, red);
-		}
+		// }
 		return (NULL);
 	}
 	else
@@ -76,7 +76,10 @@ static int	transition_normal_suite(t_parser *p)
 	else if (*CURRENT(p) == '~')
 		push_state(&p->states, ST_PATH);
 	else if (*CURRENT(p) == '`' && ++p->idx)
+	{
+		merge_part(p);
 		push_state(&p->states, ST_SUBSHELL);
+	}
 	else if (*CURRENT(p) == '|')
 	{
 		merge_part(p);

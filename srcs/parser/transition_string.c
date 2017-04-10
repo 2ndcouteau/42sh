@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 18:17:25 by ljohan            #+#    #+#             */
-/*   Updated: 2017/01/20 18:19:40 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/02/28 17:14:11 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,12 @@ int		transition_string_suite(t_parser *p)
 	{
 		merge_part(p);
 		push_state(&(p->states), ST_PIPE);
+		return (0);
+	}
+	else if (*CURRENT(p) == '`')
+	{
+		p->idx++;
+		push_state(&p->states, ST_SUBSHELL);
 		return (0);
 	}
 	else

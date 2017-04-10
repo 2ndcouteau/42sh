@@ -128,7 +128,8 @@ int				script_loop(t_shell *sh);
 */
 
 void			test_dict(t_shell *shell, int ac, char **av, char **env);
-void			test_eval(t_shell *shell, int ac, char **av, char **env);
+void			test_idx(t_shell *shell, int ac, char **av, char **env);
+// void			test_eval(t_shell *shell, int ac, char **av, char **env);
 
 # define TEST(name, shell, ac, av, env) (test_##name(shell, ac, av, env))
 

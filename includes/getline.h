@@ -6,7 +6,7 @@
 /*   By: amoreilh <amoreilh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/24 11:22:22 by amoreilh          #+#    #+#             */
-/*   Updated: 2017/03/27 21:30:44 by qrosa            ###   ########.fr       */
+/*   Updated: 2017/04/10 17:24:00 by qrosa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 /*
 **	Define Size of Function Pointer Array
 */
-# define NB_TERM_COMMAND_CURSOR		19
+# define NB_TERM_COMMAND_CURSOR		18
 # define NB_TERM_COMMAND_EDITION	6
 
 /*
@@ -79,7 +79,6 @@
 # define CAPS_ALT_DOWN				1113266971
 # define CAPS_ALT_RIGHT				1130044187
 # define CAPS_ALT_LEFT				1146821403
-# define CAPS_MAJ_DOWN				71683997260571
 # define CAPS_ALT_UP_LINUX			71688292227867
 # define CAPS_ALT_DOWN_LINUX		72787803855643
 # define CAPS_ALT_RIGHT_LINUX		73887315483419
@@ -99,6 +98,7 @@ typedef struct		s_input
 {
 	char			end;						// ??
 	char			*line;
+	char			*current_line;				//	current_line save when used history
 	int				buffsize;					//	current size line_buffer (malloc)
 	char			multi;						//	bool multi-line
 	char			comp;						//	bool autocompletion mode
@@ -125,7 +125,6 @@ typedef struct		s_input
 void				ft_displaypromptline(t_input *input);
 void				creat_new_term_struct(struct termios *new,
 	struct termios *old);
-void				ft_initstruct(t_input *input, char mode);
 char				hist_comphist(t_input *input, t_shell *sh, char upndown);
 char				*ft_getbranch(void);
 void				ft_freematch(t_starmatch *match);
@@ -136,7 +135,7 @@ void				ft_checkdir(t_starmatch *match, t_input *input);
 t_starmatch			*ft_getword(int pos, char *line, t_input *input);
 
 void				ft_cursgoto(int x, int y, int fd);
-void				ft_getcurscoords(t_input *input);
+void				ft_getcurscoords(t_input *input, t_shell *sh);
 int					term_setterm(t_shell *sh);
 int					term_resetterm(t_shell *sh);
 int					term_isfolder(char *path);

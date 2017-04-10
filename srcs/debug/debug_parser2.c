@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/22 15:58:17 by ljohan            #+#    #+#             */
-/*   Updated: 2017/02/24 15:13:52 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/03/24 16:11:20 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void		debug_cmds(t_cmds *c)
 	char	**str;
 
 	if (c == NULL)
-		ft_putstr_fd("cmds: Null", g_debug[1]);
+		ft_putstr_fd("cmds: NULL", g_debug[1]);
 	else
 	{
 		i = 0;
@@ -54,14 +54,42 @@ void		debug_cmds(t_cmds *c)
 	}
 }
 
+void	debug_subshell_instring(int **instring)
+{
+	size_t	i;
+
+	if (!instring)
+		return ;
+	i = 0;
+	while (instring[i] != NULL)
+	{
+		ft_fdprintf(g_debug[1], " [%d,%d]", instring[i][0], instring[i][1]);
+		i++;
+	}
+}
+
 void	debug_subshell(t_subshell *sub)
 {
 	ft_fdprintf(g_debug[1], "subshell: ");
 	if (sub == NULL)
 		ft_fdprintf(g_debug[1], "null\n");
 	else
-		ft_fdprintf(g_debug[1], "idx: %d\n",sub->idx);
-		// ft_fdprintf(g_debug[1], "\n\tcode: %s\n\tidx: %d\n", sub->code, sub->idx);
+	{
+		ft_fdprintf(g_debug[1], "idxs:");
+		while (sub)
+		{
+			ft_fdprintf(g_debug[1], " (%d: ", sub->idx);
+			if (sub->instring != NULL)
+				debug_subshell_instring(sub->instring);
+			ft_putstr_fd(")", g_debug[1]);
+			if (sub->head.next == NULL)
+			{
+				ft_putstr_fd("\n", g_debug[1]);
+				break ;
+			}
+			sub = GET_NODE(sub->head.next, t_subshell, head);
+		}
+	}
 }
 
 void		debug_process(t_processes *p)

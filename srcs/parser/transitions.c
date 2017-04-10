@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/09 17:09:48 by ljohan            #+#    #+#             */
-/*   Updated: 2017/01/24 16:48:29 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/02/28 23:43:40 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		transition_eof(t_parser *p)
 int		transition_var(t_parser *p)
 {
 	pop_state(&(p->states));
-	if (STATE(p) == ST_NORM)
+	if (STATE(p) == ST_NORM && IS_BLANK(*CURRENT(p)))
 		merge_part(p);
 	return (0);
 }

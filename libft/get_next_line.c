@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nboulaye <nboulaye@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mlinhard <mlinhard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 19:53:28 by mlinhard          #+#    #+#             */
-/*   Updated: 2016/08/25 03:09:31 by nboulaye         ###   ########.fr       */
+/*   Updated: 2017/02/26 17:12:51 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/get_next_line.h"
+#include <stdio.h>
 
 static int		mknl(char *buf, char *ptr_nl, char **line)
 {

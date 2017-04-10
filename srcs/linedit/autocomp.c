@@ -6,7 +6,7 @@
 /*   By: amoreilh <amoreilh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 15:16:48 by amoreilh          #+#    #+#             */
-/*   Updated: 2017/03/23 17:40:04 by qrosa            ###   ########.fr       */
+/*   Updated: 2017/04/10 17:09:19 by qrosa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int				comp_autocomp(t_input *input, t_autocomp *autoc)
 		ft_getlist(autoc);
 		if (!ft_strchr(A->str, '*'))
 			ft_getlistsize(autoc, input);
-		if (I->nblines + A->nblines + 1 >= I->termh)		// Why block this completion ??
+		if (I->nblines + A->nblines + 1 >= I->termh)
 		{
 			ft_putstr("\nWindow size too small");
 			ft_freecomplist(autoc);

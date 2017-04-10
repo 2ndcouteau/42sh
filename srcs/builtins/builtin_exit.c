@@ -6,7 +6,7 @@
 /*   By: nboulaye <nboulaye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/28 22:55:14 by nboulaye          #+#    #+#             */
-/*   Updated: 2017/02/20 22:07:58 by nboulaye         ###   ########.fr       */
+/*   Updated: 2017/04/07 21:16:12 by nboulaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	new_history_file(t_history *hist, t_dict *env)
 	close(fd);
 }
 
-char 		ft_strisdigit(char *s)
+char		ft_strisdigit(char *s)
 {
 	char		*str;
 	long int	i;
@@ -78,10 +78,12 @@ int			ft_exit(t_shell *sh, t_processes *proc)
 	if (sh->bg_jobs)
 		return (ft_fdprintf(2, "42sh: you have suspended jobs!\n"));
 	ft_putendl_fd("exit 42sh", 2);
-	if (g_debug[0])ft_fdprintf(g_debug[1], "status d'exit sh->status = {%d}\n", sh->status);
+	if (g_debug[0])
+		ft_fdprintf(g_debug[1], "status d'exit = {%d}\n", sh->status);
 	if (proc && proc->cmds && proc->cmds->argv
 	&& ft_strequ(proc->cmds->argv[0], "exit") && proc->cmds->argv[1])
-		status = (!ft_strisdigit(proc->cmds->argv[1])) ? 255 : (ft_atoi(proc->cmds->argv[1]));
+		status = (!ft_strisdigit(proc->cmds->argv[1]))
+			? 255 : (ft_atoi(proc->cmds->argv[1]));
 	else if (sh)
 		status = sh->status;
 	else

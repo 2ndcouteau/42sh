@@ -6,13 +6,14 @@
 /*   By: qrosa <qrosa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/16 19:06:50 by qrosa             #+#    #+#             */
-/*   Updated: 2017/02/22 20:41:31 by qrosa            ###   ########.fr       */
+/*   Updated: 2017/04/07 22:23:32 by nboulaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-void		cd_relative_path(t_cmd *current_cmd, char **current_pwd, char *new_path)
+void		cd_relative_path(t_cmd *current_cmd,
+				char **current_pwd, char *new_path)
 {
 	int		new_path_len;
 	int		pwd_len;

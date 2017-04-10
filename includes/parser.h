@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 12:13:42 by ljohan            #+#    #+#             */
-/*   Updated: 2017/02/23 17:34:52 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/02/28 23:24:52 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct	s_parser
 	char		first_word;
 	char		*errmess;
 	char		eof;
+	char		merge;
 }				t_parser;
 
 # define CURRENT(parser) (&(parser->orig[parser->idx]))
@@ -56,12 +57,13 @@ enum {
 	ST_PASS,
 	ST_SETVAR,
 	ST_QUOTE,
-	ST_CONTINUE,
+	// ST_CONTINUE,
 	ST_SUBSHELL,
+	ST_ONEMORE,
 };
 
 # define ST_INIT ST_NORM
-# define STATE(p) p->states == NULL ? -1 : p->states->state
+# define STATE(p) (p->states == NULL ? -1 : p->states->state)
 # define PRE_IS_ML(p) (STATE(p) == ST_MULTILINE) || (STATE(p) == ST_ONELINE)
 # define IS_ML(p) PRE_IS_ML(p) || (STATE(p) == ST_HEREDOC)
 
@@ -71,7 +73,7 @@ enum {
 
 # define CS_BLANK " \t\n"
 # define CS_ESCAPE " \t\n$\"\\;~|&<>='`"
-# define CS_ESCAPE_STR "$\"\\"
+# define CS_ESCAPE_STR "$\"\\`"
 # define CS_ESCAPE_VAR "\\ \"\t;$~/|<>"
 # define CS_ESCAPE_PATH "\\ \"\t;$~|<>"
 # define CS_REDIR "0123456789><&"
@@ -108,11 +110,19 @@ char			*forward_escape(char *str, const char *charset);
 # define FWD_REDIR(s) forward_with(s, CS_REDIR)
 
 /*
+** main
+*/
+
+void 			action(t_shell *sh);
+char			*implicit_parse_one(t_shell *sh, t_parser *p);
+
+/*
 ** normal.c
 */
 
 char			*parse_normal(t_parser *parser);
 char			*handle_normal(t_shell *sh, t_parser *p);
+char			*handle_onemore(t_shell *sh, t_parser *p);
 
 /*
 ** first_word.c
@@ -144,9 +154,10 @@ void			void_handler(t_parser *p);
 void			handle_error(t_parser *p);
 void			handle_eof(t_parser *p);
 void			handle_eoc(t_parser *p);
-void			handle_setvar(t_parser *p);
+void			handle_setvar(t_shell *shell, t_parser *p);
 void			handle_pipe(t_parser *p);
 void			handle_heredoc(t_parser *p);
+
 
 /*
 ** transitions.c
@@ -167,6 +178,7 @@ int				transition_bg(t_parser *p);
 int				transition_var(t_parser *p);
 int				transition_path(t_parser *p);
 int				transition_subshell(t_shell *shell, t_parser *p);
+int				transition_onemore(t_parser *p);
 
 /*
 ** parse.c
@@ -198,11 +210,12 @@ void			destroy_redir(t_redir **red);
 void			merge_redir(t_parser *p, t_redir *red);
 
 void			parse(t_shell *shell);
-t_redir			*get_current_redir(t_parser *p);
+t_redir		*get_current_redir(t_parser *p);
 char			*ft_stabjoin(char *sep, char **stab);
-t_redir			*try_redir(t_shell *sh, t_parser *p);
+t_redir		*try_redir(t_shell *sh, t_parser *p);
 void			handle_aliases(t_parser *p, char *key, char *alias);
 char			*ft_eval(t_shell *shell, char *code);
 
-
+int				itab_push(int ***itab, int i0, int i1);
+size_t			itab_len(int **itab);
 #endif

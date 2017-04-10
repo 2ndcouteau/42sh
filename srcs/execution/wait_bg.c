@@ -6,7 +6,7 @@
 /*   By: nboulaye <nboulaye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/28 22:55:14 by nboulaye          #+#    #+#             */
-/*   Updated: 2017/02/18 19:46:58 by nboulaye         ###   ########.fr       */
+/*   Updated: 2017/04/07 21:06:22 by nboulaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,6 @@ void		print_debug(int status, int pid)
 		WTERMSIG() = %d, WCOREDUMP() = %d WSTOPSIG() = %d; \033[0m\n"
 		, WEXITSTATUS(status), WTERMSIG(status), WCOREDUMP(status)
 		, WSTOPSIG(status));
-	}
-}
-
-void		wait_all_grp(t_jobs *jobs, int pid, int status)
-{
-	t_processes	*lst_proc;
-
-	lst_proc = GET_NODE(list_last(&jobs->process->head), t_processes, head);
-	while (lst_proc)
-	{
-		if (pid != lst_proc->pid)
-		{
-			if (waitpid(lst_proc->pid, &lst_proc->status, WNOHANG) < 0)
-				ft_fdprintf(2, "\033[31mwaitpid() error: %s\n\033[0m",
-				*lst_proc->cmds->argv);
-		}
-		else
-			lst_proc->status = status;
-		lst_proc = (lst_proc && lst_proc->head.prev) ?
-			GET_NODE((lst_proc->head.prev), t_processes, head) : NULL;
 	}
 }
 
@@ -79,21 +59,21 @@ void		chk_status_bg(int status, t_jobs *jobs, t_jobs **jobs_lst)
 
 void		wait_bg(t_jobs **jobs_lst, t_jobs *jobs)
 {
-	int	pid;
-	int	status;
+	int			pid;
+	int			status;
+	t_processes *proc;
 
+	proc = jobs->process;
 	status = 0;
-	if ((pid = waitpid(-jobs->pgid, &status,
-		WUNTRACED | WNOHANG | WCONTINUED)) < 0)
+	while (proc)
 	{
-		ft_fdprintf(2, "\033[31mwaitpid() error: {%s}\n\033[0m",
-			*jobs->process->cmds->argv);
-		exit(1);//resturn ??
+		if ((pid = waitpid(proc->pid, &status,
+			WUNTRACED | WNOHANG | WCONTINUED)) == 0)
+			return ;
+		proc = (proc->head.next) ?
+		GET_NODE((proc->head.next), t_processes, head) : NULL;
 	}
-	if (!pid)
-		return ;
 	print_debug(status, pid);
-	wait_all_grp(jobs, pid, status);
 	jobs->status = status;
 	jobs->process->status = status;
 	chk_status_bg(status, jobs, jobs_lst);

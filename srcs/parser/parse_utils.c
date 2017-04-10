@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 17:54:32 by ljohan            #+#    #+#             */
-/*   Updated: 2017/01/20 21:28:18 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/02/28 22:44:49 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,14 @@ void	merge_part(t_parser *p)
 {
 	t_cmds	*cmd;
 
-	if (p->part == NULL || (ft_strcmp(p->part, "") == 0))
-		return ;
-	cmd = get_last_cmd(get_last_process(get_last_job(p->jobs)->process)->cmds);
-	ft_stabpush(&(cmd->argv), p->part);
-	ft_strdel(&(p->part));
+	if (p->merge)
+	{
+		if (p->part == NULL || (ft_strcmp(p->part, "") == 0))
+			return ;
+		cmd = get_last_cmd(get_last_process(get_last_job(p->jobs)->process)->cmds);
+		ft_stabpush(&(cmd->argv), p->part);
+		ft_strdel(&(p->part));
+	}
 }
 
 void	make_error(t_parser *p, char *mess)

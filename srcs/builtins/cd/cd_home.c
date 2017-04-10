@@ -6,13 +6,14 @@
 /*   By: qrosa <qrosa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/16 18:16:56 by qrosa             #+#    #+#             */
-/*   Updated: 2017/02/22 20:41:06 by qrosa            ###   ########.fr       */
+/*   Updated: 2017/04/07 22:19:32 by nboulaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-void		cd_home(t_cmd *current_cmd, t_dict *env, char **current_pwd, char *new_path)
+void		cd_home(t_cmd *current_cmd, t_dict *env,
+					char **current_pwd, char *new_path)
 {
 	int		pwd_len;
 	int		new_path_len;

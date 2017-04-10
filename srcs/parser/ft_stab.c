@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/07 00:02:53 by ljohan            #+#    #+#             */
-/*   Updated: 2017/02/18 21:57:45 by nboulaye         ###   ########.fr       */
+/*   Updated: 2017/02/26 16:44:11 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int		ft_stabpush(char ***stab, char *entry)
 		len = ft_stablen((*stab));
 	if ((ret = (char **)ft_memalloc(sizeof(char*) * (len + 2))) == NULL)
 		return (-1);
+
 	ret[len + 1] = 0;
 	while ((*stab) != NULL && (*stab)[i])
 	{

@@ -6,13 +6,13 @@
 /*   By: amoreilh <amoreilh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/21 16:29:13 by amoreilh          #+#    #+#             */
-/*   Updated: 2017/03/26 19:28:51 by qrosa            ###   ########.fr       */
+/*   Updated: 2017/04/10 17:24:52 by qrosa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	ft_getcurscoords(t_input *input)
+void	ft_getcurscoords(t_input *input, t_shell *sh)
 {
 	int i;
 	int j;
@@ -20,10 +20,10 @@ void	ft_getcurscoords(t_input *input)
 
 	i = 1;
 	j = 0;
-	ft_bzero(input->cursbuff, 10);  // Why bzero on 10 char instead of cursbuff size is 12 ???
+	ft_bzero(input->cursbuff, 10);
 	write(0, "\033[6n", 4);
-	if (read(0, input->cursbuff, 12) == -1)		// Here you read 12 ! Need check read() return;
-		exit (EXIT_FAILURE); // NEED TO CREATE AN EXIT FUNCTION;
+	if (read(0, input->cursbuff, 12) == -1)
+		ft_exit(sh, sh->bg_jobs->process);
 	x = 0;
 	while (++i < 10)
 	{
@@ -53,7 +53,7 @@ int		term_setterm(t_shell *sh)
 	|| (tgetent(NULL, name_term) <= 0))
 	{
 		ft_fdprintf(2, "\033[31mValid TERM var needed\033[0m\n\n");
-		sh->parser->orig = NULL;	//ft_strnew(0);// je comprends pas pk il faut faire ca avant de destroy ici!
+		sh->parser->orig = NULL;
 		destroy_shell(&sh);
 		exit(EXIT_FAILURE);
 	}
@@ -62,15 +62,11 @@ int		term_setterm(t_shell *sh)
 	signal(SIGTTOU, SIG_IGN);
 	if (tcgetpgrp(0) != getpid())
 		tcsetpgrp(0, getpid());
-	// signal(SIGTTIN, test);
-	// signal(SIGTTOU, test);
-	if ((tcsetattr(STDIN_FILENO, TCSADRAIN, &new)))				// Why OPTION is different from term_reseterm()
+	if ((tcsetattr(STDIN_FILENO, TCSADRAIN, &new)))
 	{
 		ft_putendl_fd("\033[31mtcsetattr error\n\033[0m", 2);
 		exit(EXIT_FAILURE);
 	}
-	// signal(SIGTTIN, test);
-	// signal(SIGTTOU, test);
 	return (SUCCESS);
 }
 

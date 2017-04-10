@@ -6,7 +6,7 @@
 /*   By: yoko <yoko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 18:17:47 by yoko              #+#    #+#             */
-/*   Updated: 2017/03/27 16:04:58 by qrosa            ###   ########.fr       */
+/*   Updated: 2017/04/07 22:57:24 by qrosa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int			getline_loop(t_shell *sh, t_input *input, char *buf,
 	int				i;
 	unsigned long	*buff_convert;
 
-	// print_prompt(input);
 	while (42 && (I->bufposmax <= I->buffsize))
 	{
 		I->ret = NO_ACTION;

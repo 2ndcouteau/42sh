@@ -6,7 +6,7 @@
 /*   By: amoreilh <amoreilh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 15:18:21 by amoreilh          #+#    #+#             */
-/*   Updated: 2017/03/23 17:30:14 by qrosa            ###   ########.fr       */
+/*   Updated: 2017/04/10 17:11:48 by qrosa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void		ft_folderorglob_isfolder(t_autocomp *autoc, t_input *input)
 	I->bufpos++;
 }
 
-static void 	globbing_paste(t_input *I, char *clipboard)
+static void		globbing_paste(t_input *input, char *clipboard)
 {
 	int pastelen;
 
@@ -49,17 +49,15 @@ void			ft_folderorglob(t_autocomp *autoc, t_input *input)
 	t_starmatch		*match;
 	char			*endsave;
 
-
-// Need to check if the completion was effective or not and return this status.
 	match = NULL;
 	endsave = NULL;
 	ft_cursgoto(input->savecursx, input->savecursy - 1, 1);
 	ft_putchar('\n');
 	ft_cursgoto(input->savecursx, input->savecursy - 1, 1);
-	if (A->str && (ft_strchr(A->str, '*')) &&
-	I->line[I->bufpos - 1] && (I->line[I->bufpos - 1] == '/'))		// why check I->line[I->bufpos - 1] First case, is exist/ second case, is not and you segfault ..
+	if (A->str && (ft_strchr(A->str, '*')) && (I->line[I->bufpos - 1] == '/'))
 		I->line[I->bufpos - 1] = ' ';
-	else if ((I->line[I->bufpos - 1] != '/') && ft_strchr(A->str, '*'))	// previous condition you check if A->str and not here.
+	else if (A->str && (I->line[I->bufpos - 1] != '/') &&
+														ft_strchr(A->str, '*'))
 		if ((match = ft_getword(I->bufpos - ft_strlen(A->str) + 1, I->line, I)))
 		{
 			endsave = ft_strdup(&input->line[input->bufpos]);
@@ -67,6 +65,6 @@ void			ft_folderorglob(t_autocomp *autoc, t_input *input)
 			globbing_paste(input, endsave);
 			free(endsave);
 		}
-	if (!term_isfolder(A->str) && (I->line[I->bufpos - 1] != '/'))
+	if (A->str && !term_isfolder(A->str) && (I->line[I->bufpos - 1] != '/'))
 		ft_folderorglob_isfolder(A, I);
 }

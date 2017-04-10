@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 17:15:48 by ljohan            #+#    #+#             */
-/*   Updated: 2017/02/23 17:36:15 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/02/28 22:57:25 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ char		transition(t_shell *shell, t_parser *p)
 	}
 	if (STATE(p) == ST_NORM)
 		return (transition_normal(p));
+	else if (STATE(p) == ST_ONEMORE)
+		return (transition_onemore(p));
 	else if (STATE(p) == ST_STR)
 		return (transition_string(p));
 	else if (STATE(p) == ST_QUOTE)

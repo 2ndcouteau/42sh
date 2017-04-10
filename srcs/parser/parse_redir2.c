@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/22 16:19:13 by ljohan            #+#    #+#             */
-/*   Updated: 2017/02/18 18:24:34 by nboulaye         ###   ########.fr       */
+/*   Updated: 2017/03/01 00:07:00 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		try_redir_suite(t_shell *sh, t_parser *p, int *idx, t_redir *red)
 	else if (red->rtype == HEREDOC || red->rtype == REDAPPEND)
 	{
 		p->idx = *idx;
-		red->arg = handle_normal(sh, p);
+		red->arg = implicit_parse_one(sh, p);
 		if (ft_strcmp(red->arg, "") == 0)
 			ft_strdel(&(red->arg));
 		if (red->rtype == HEREDOC)
@@ -58,7 +58,7 @@ int		try_redir_suite(t_shell *sh, t_parser *p, int *idx, t_redir *red)
 		if ((red->arg = get_red_fdout(p, idx)) == NULL)
 		{
 			p->idx = *idx;
-			red->arg = parse_normal(p);
+			red->arg = implicit_parse_one(sh, p);
 		}
 	}
 	return (0);
@@ -78,9 +78,6 @@ t_redir	*try_redir(t_shell *sh, t_parser *p)
 	if (red->arg == NULL || ft_strcmp(red->arg, "") == 0 ||
 		ft_strcmp(red->arg, "&") == 0)
 	{
-		// if (STATE(p) != ST_REDIR)
-		// 	push_state(&(p->states), ST_REDIR);
-		// add_state(&(p->states), ST_CONTINUE);
 		p->idx += forward_with(CURRENT(p), CS_BLANK) - CURRENT(p);
 		if (*CURRENT(p) == 0)
 			ft_fdprintf(2, "parse error: symbole inattendu: newline\n");

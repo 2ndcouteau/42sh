@@ -32,7 +32,7 @@ SRCS_NAMES = main.c script.c \
 			linedit/comp_firstletters.c \
 			linedit/hist_comphist.c \
 			linedit/tools2.c linedit/termcaps.c \
-			linedit/autocomptools.c linedit/wildcardutils.c linedit/gitstatus.c\
+			linedit/autocomptools.c linedit/wildcardutils.c \
 			linedit/autocomptools2.c \
 			\
 			parser/list_head.c parser/states.c parser/ft_path.c parser/ft_stab.c \
@@ -45,8 +45,8 @@ SRCS_NAMES = main.c script.c \
 			parser/path_utils.c parser/handlers.c parser/parse_line.c parser/parse_utils.c \
 			parser/last_elem.c parser/new_elem.c parser/current_redir.c parser/transitions.c \
 			parser/transitions2.c parser/transitions3.c parser/parse.c parser/heredoc.c \
-			parser/transition_string.c parser/handle_pipe.c \
-			parser/handle_setvar.c parser/parse_sub.c parser/subshell.c\
+			parser/transition_string.c parser/handle_pipe.c parser/onemore.c \
+			parser/handle_setvar.c parser/parse_sub.c parser/subshell.c parser/itab.c\
 			\
 			execution/chk_status.c execution/exec_proc.c \
 			execution/wait_proc.c execution/creat_pipe.c execution/redir.c \

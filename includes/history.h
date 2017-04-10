@@ -6,7 +6,7 @@
 /*   By: nboulaye <nboulaye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 18:55:46 by nboulaye          #+#    #+#             */
-/*   Updated: 2017/01/24 21:37:29 by nboulaye         ###   ########.fr       */
+/*   Updated: 2017/04/01 22:42:00 by qrosa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,6 @@ int				open_read_f_history(t_history *history, t_dict *env);
 int				creat_elem_hist(char *line, t_history *history);
 int				strchr_replace(char *str, char c_old, char c_new);
 int				open_read_f(t_dict *env);
+char			hist_move(t_input *input, unsigned long *buff_conv);
+
 #endif

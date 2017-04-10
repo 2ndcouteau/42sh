@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/09 14:51:13 by ljohan            #+#    #+#             */
-/*   Updated: 2017/02/23 14:56:06 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/02/28 19:21:46 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static char	*human_state_suite(int state)
 		return ("setvar");
 	else if (state == ST_QUOTE)
 		return ("quote");
-	else if (state == ST_CONTINUE)
-		return ("continue");
+	// else if (state == ST_CONTINUE)
+	// 	return ("continue");
 	else
 		return ("unreconized");
 }

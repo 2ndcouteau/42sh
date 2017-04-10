@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/06 20:53:47 by ljohan            #+#    #+#             */
-/*   Updated: 2017/02/23 13:25:41 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/04/06 19:19:46 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ int			main_loop(t_shell *sh, char stop)
 void		main_test(t_shell *sh, int ac, char **av, char **env)
 {
 	TEST(dict, sh, ac, av, env);
-	TEST(eval, sh, ac, av, env);
+	TEST(idx, sh, ac, av, env);
+	// TEST(eval, sh, ac, av, env);
 }
 
 void		debug(int n, char *path)
@@ -127,7 +128,6 @@ int			main(int ac, char **av, char **env)
 	}
 	else
 	{
-		ft_fdprintf(2, "\033[31m Scxript loooooop\n\033[0m");
 		sh->script = 1;
 		script_loop(sh);
 	}

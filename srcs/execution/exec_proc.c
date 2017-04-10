@@ -6,7 +6,7 @@
 /*   By: nboulaye <nboulaye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/28 22:55:14 by nboulaye          #+#    #+#             */
-/*   Updated: 2017/02/23 14:45:13 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/04/06 19:16:44 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ static void	readcmd(char *cmd, t_shell *sh, char *tmppath, char **pathcmp)
 
 void test(int i)
 {
-	ft_fdprintf(2, " catch! sig %s\n", (i == SIGTTOU) ? "SIGTTOU" : "SIGTTIN");
+	if (g_debug[0])
+		ft_fdprintf(g_debug[1], " catch! sig %s\n", (i == SIGTTOU) ?
+		"SIGTTOU" : "SIGTTIN");
 	if (i == SIGTTOU)
 	{
 		if (tcsetpgrp(0, getpid()) == -1)
@@ -58,12 +60,12 @@ void		exec_dad(t_jobs **jobs, t_shell *sh, t_processes *proc, int fd[4])
 	(!(*jobs)->pgid) ? (*jobs)->pgid = proc->pid : 1;
 	if (setpgid(proc->pid, (*jobs)->pgid) == -1)
 		ft_fdprintf(2, "\nsetpgid(proc->pid,proc->pid)ERROR\n");
-	if (!sh->script && tcgetpgrp(1) != (*jobs)->pgid && ft_fdprintf(2, "tcgetpgrp(0) == {%d}; tcgetpgrp(1) == {%d}\n", tcgetpgrp(0), tcgetpgrp(1)))
+	if (!sh->script && tcgetpgrp(1) != (*jobs)->pgid && ft_fdprintf(g_debug[1], "tcgetpgrp(0) == {%d}; tcgetpgrp(1) == {%d}\n", tcgetpgrp(0), tcgetpgrp(1)))
 	{
 		if (tcsetpgrp(0, (*jobs)->pgid) == -1 && tcsetpgrp(1, (*jobs)->pgid) == -1)
 			ft_fdprintf(2, "tcsetpgrp(0, proc->pid = {%d} pgid = %d, getpid={%d} getppid={%d}) ERROR\n", proc->pid, (*jobs)->pgid, getpid(), getppid());
 	else
-		ft_fdprintf(2, "tcsetpgrp(0, proc->pid = {%d} pgid = %d, getpid={%d} getppid={%d}) ok\n", proc->pid, (*jobs)->pgid, getpid(), getppid());
+		ft_fdprintf(g_debug[1], "tcsetpgrp(0, proc->pid = {%d} pgid = %d, getpid={%d} getppid={%d}) ok\n", proc->pid, (*jobs)->pgid, getpid(), getppid());
 	}
 	if (proc->head.next)
 	{
@@ -125,6 +127,95 @@ static int	exec_child(t_jobs **jobs, t_shell *sh, t_processes *proc,
 	return (proc->status);
 }
 
+int			replace_subshells(t_shell *shell, t_processes **proc)
+{
+	t_subshell	*ptr;
+	t_parser	*mem;
+
+	char		*output;
+	char		**outtab;
+	size_t		len_out;
+	size_t		len_new;
+
+	char		**new_av;
+	ssize_t 		i;
+
+	if ((*proc)->subshell && (*proc)->cmds && (*proc)->cmds->argv)
+	{
+		ptr = GET_NODE(list_last(&((*proc)->subshell->head)), t_subshell, head);
+
+		while (ptr)
+		{
+			mem = shell->parser;
+			shell->parser = NULL;
+			if (ptr->instring == NULL)
+			{
+				if ((output = ft_eval(shell, (*proc)->cmds->argv[ptr->idx])) != NULL)
+				{
+					output = ft_strtrim(output);
+					if ((outtab = ft_strsplit(output, '\n')) != NULL)
+					{
+						len_out = ft_stablen(outtab);
+						len_new = ft_stablen((*proc)->cmds->argv) + len_out;
+						new_av = ft_stabnew(len_new);
+						i = 0;
+						while (i < (ssize_t)len_new)
+						{
+							if (i < (ssize_t)ptr->idx)
+								new_av[i] = ft_strdup((*proc)->cmds->argv[i]);
+							else if ((size_t)i < ptr->idx + len_out)
+								new_av[i] = ft_strdup(outtab[i - (size_t)ptr->idx]);
+							else if (i - len_out + 1 < ft_stablen((*proc)->cmds->argv))
+								new_av[i] = ft_strdup((*proc)->cmds->argv[i - len_out + 1]);
+							i++;
+						}
+						ft_stabdel((&(*proc)->cmds->argv));
+						ft_stabdel(&(outtab));
+						ft_strdel(&output);
+						(*proc)->cmds->argv = new_av;
+					}
+					else
+						ft_strdel(&output);
+				}
+			} else
+			{
+					i = itab_len(ptr->instring);
+					while (--i >= 0)
+					{
+						char *code;
+						if ((code = ft_strsub((*proc)->cmds->argv[ptr->idx],
+									ptr->instring[i][0],
+									ptr->instring[i][1]- ptr->instring[i][0])
+								) != NULL)
+						{
+							if ((output = ft_eval(shell, code)) != NULL)
+							{
+								output = ft_strtrim(output);
+								ft_fdprintf(g_debug[1], "output from subshell: %s", output);
+								char *newstr = ft_strsub((*proc)->cmds->argv[ptr->idx],0,ptr->instring[i][0]);
+								char *newstr1 = ft_strsub((*proc)->cmds->argv[ptr->idx],
+									ptr->instring[i][0] + ft_strlen(code),
+									ft_strlen((*proc)->cmds->argv[ptr->idx]) -
+									(ptr->instring[i][0] + ft_strlen(code)));
+								newstr = ft_strjoinfree(newstr,ft_strjoinfree(output,newstr1));
+								ft_strdel(&((*proc)->cmds->argv[ptr->idx]));
+								(*proc)->cmds->argv[ptr->idx] = newstr;
+							}
+						else
+							{ft_fdprintf(2,"ERRR\n");
+							return (1);}}
+					}
+			}
+			destroy_parser(&(shell->parser));
+			shell->parser = mem;
+			if (ptr->head.prev == NULL)
+				break;
+			ptr = GET_NODE(ptr->head.prev, t_subshell, head);
+		}
+	}
+	return (0);
+}
+
 void		ft_execprocess(t_jobs **jobs, t_processes *p, t_shell *sh,
 			t_dict *env)
 {
@@ -132,26 +223,31 @@ void		ft_execprocess(t_jobs **jobs, t_processes *p, t_shell *sh,
 	int			isbuiltin;
 	int			fd[4];
 
-	(g_debug[0]) ? ft_fdprintf(g_debug[1], "Process: %s\n", *p->cmds->argv) : 1;
-	if (!(isbuiltin = ft_isbuiltin(*p->cmds->argv)))
-		readcmd(*p->cmds->argv, sh, ft_getenv(p->env, "PATH"), &p->path);
-	if (isbuiltin == __BUILTIN_ENV && (builtin_env(jobs, p, sh) || 1))
-		return ;
-	if ((ret = 1) && p->head.next)
-		if (creat_pipe(fd))
-			return ;
-	if (!(isbuiltin) || p->head.next || p->head.prev
-	|| ((*jobs)->flags == ST_BG))
-		if ((p->pid = fork()) == -1 && ft_putstr_fd("fork error\n", 2))
-			return ;
-	if (p->pid)
-		exec_dad(jobs, sh, p, fd);
-	else
+	if (p->subshell != NULL)
+		replace_subshells(sh, &p);
+	if (p && p->cmds && p->cmds->argv)
 	{
-		if (!redir(p, fd))
-			ret = exec_child(jobs, sh, p, env);
-		if (!(isbuiltin) || p->head.next || p->head.prev)
-			exit(ret);
+		(g_debug[0]) ? ft_fdprintf(g_debug[1], "Process: %s\n", *p->cmds->argv) : 1;
+		if (!(isbuiltin = ft_isbuiltin(*p->cmds->argv)))
+			readcmd(*p->cmds->argv, sh, ft_getenv(p->env, "PATH"), &p->path);
+		if (isbuiltin == __BUILTIN_ENV && (builtin_env(jobs, p, sh) || 1))
+			return ;
+		if ((ret = 1) && p->head.next)
+			if (creat_pipe(fd))
+				return ;
+		if (!(isbuiltin) || p->head.next || p->head.prev
+		|| ((*jobs)->flags == ST_BG))
+			if ((p->pid = fork()) == -1 && ft_putstr_fd("fork error\n", 2))
+				return ;
+		if (p->pid)
+			exec_dad(jobs, sh, p, fd);
+		else
+		{
+			if (!redir(p, fd))
+				ret = exec_child(jobs, sh, p, env);
+			if (!(isbuiltin) || p->head.next || p->head.prev)
+				exit(ret);
+		}
+		ft_strdel(&p->path);
 	}
-	ft_strdel(&p->path);
 }

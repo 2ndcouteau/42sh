@@ -6,7 +6,7 @@
 /*   By: amoreilh <amoreilh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 15:18:42 by amoreilh          #+#    #+#             */
-/*   Updated: 2017/03/27 19:12:33 by qrosa            ###   ########.fr       */
+/*   Updated: 2017/04/10 16:23:59 by qrosa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ int		alt_arrow_down(t_input *input)
 	if ((input->bufpos + input->termw) <= input->bufposmax)
 		input->bufpos += input->termw;
 	else if ((input->bufposmax >= input->termw) &&
-	((input->bufposmax / input->termw) - (input->bufpos / input->termw) > 0))
+						((input->bufposmax / input->termw) -
+										(input->bufpos / input->termw) > 0))
 		I->bufpos = I->bufposmax;
 	else
 		return (ERROR);
