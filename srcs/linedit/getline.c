@@ -6,7 +6,7 @@
 /*   By: amoreilh <amoreilh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 15:17:26 by amoreilh          #+#    #+#             */
-/*   Updated: 2017/04/10 17:36:04 by qrosa            ###   ########.fr       */
+/*   Updated: 2017/04/10 18:03:20 by qrosa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	return_term_resetterm(t_shell *sh, int ret)
 
 char	is_ml_fct(t_shell *sh, t_input *input, char **ptr, char *new)
 {
-	if ((new = ft_getline(&I, sh)) != NULL)
+	if ((new = ft_getline(I, sh)) != NULL)
 	{
 		if (!(*ptr))
 			(*ptr) = new;
@@ -62,8 +62,7 @@ char	is_ml_fct(t_shell *sh, t_input *input, char **ptr, char *new)
 		if (!(*ptr))
 			return (return_term_resetterm(sh, 1));
 	}
-	else
-		return (return_term_resetterm(sh, 2));
+	return (return_term_resetterm(sh, 2));
 }
 
 char	event_loop(t_shell *sh, char **ptr)
@@ -81,7 +80,7 @@ char	event_loop(t_shell *sh, char **ptr)
 	ptr = ((STATE(sh->parser) == ST_HEREDOC) && (red != NULL)) ? &(red->heredoc)
 		: &(sh->parser->orig);
 	if (IS_ML(sh->parser))
-		return (is_ml_fct(sh, input, ptr, new));
+		return (is_ml_fct(sh, &input, ptr, new));
 	else if ((*ptr))
 	{
 		free(*ptr);
