@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 17:15:48 by ljohan            #+#    #+#             */
-/*   Updated: 2017/03/01 00:03:34 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/04/08 22:04:21 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void		action(t_shell *sh)
 	else if (STATE(sh->parser) == ST_VAR)
 		update_part(sh->parser, parse_var(sh->parser));
 	else if (STATE(sh->parser) == ST_PATH)
-		update_part(sh->parser, parse_path(sh->parser));
+		update_part(sh->parser, parse_path(sh->parser,sh->options->env));
 	else if (STATE(sh->parser) == ST_EOC)
 		handle_eoc(sh->parser);
 	else if (STATE(sh->parser) == ST_ESCAPE)

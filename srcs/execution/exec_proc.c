@@ -6,7 +6,7 @@
 /*   By: nboulaye <nboulaye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/28 22:55:14 by nboulaye          #+#    #+#             */
-/*   Updated: 2017/04/06 19:16:44 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/04/10 17:58:48 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,85 +127,120 @@ static int	exec_child(t_jobs **jobs, t_shell *sh, t_processes *proc,
 	return (proc->status);
 }
 
+static char 		*str_repl(char *str, char *old, char *new, int len)
+{
+	char *pre;
+	char *post;
+
+	pre = ft_strsub(str, 0, len);
+	post = ft_strsub(str,
+		len + ft_strlen(old),
+		ft_strlen(str) - (len + ft_strlen(old)));
+	return ft_strjoinfree(pre,ft_strjoinfree(ft_strdup(new), post));
+}
+
+char						*get_code(char *str, int *idxs)
+{
+	return ft_strsub(str, idxs[0], idxs[1] - idxs[0]);
+}
+
+char						*get_eval(t_shell *shell, char *code)
+{
+	char *ret;
+	char *ptr;
+
+	if ((ret = ft_eval(shell, code)) == NULL)
+	 	return (NULL);
+	ptr = ret;
+	ret = ft_strtrim(ptr);
+	ft_strdel(&ptr);
+	return (ret);
+}
+
+static int			replace_instring(t_shell *shell, t_subshell *sub, t_processes **proc)
+{
+	ssize_t i;
+	char		*code;
+	char		*newstr;
+	char		*output;
+
+	i = itab_len(sub->instring);
+	while (--i >= 0)
+	{
+		if ((code = get_code((*proc)->cmds->argv[sub->idx],
+			sub->instring[i])) != NULL)
+		{
+			if ((output = get_eval(shell, code)) != NULL)
+		 	{
+				newstr = str_repl((*proc)->cmds->argv[sub->idx], code, output,
+					sub->instring[i][0]);
+				ft_strdel(&output);
+				ft_strdel(&code);
+				ft_strdel(&((*proc)->cmds->argv[sub->idx]));
+				(*proc)->cmds->argv[sub->idx] = newstr;
+		 	}
+			else
+					return (1);
+		}
+	}
+	return (0);
+}
+
+static char	**replace_normal(char **argv, char *output, int idx)
+{
+	char		**splited;
+	char		**new_av;
+	size_t	len_out;
+	size_t	len_new;
+	size_t			i;
+
+	new_av = NULL;
+	if ((splited = ft_strsplit(output, '\n')))
+	{
+		len_out = ft_stablen(splited);
+		len_new = ft_stablen(argv) + len_out;
+		new_av = ft_stabnew(len_new);
+		i = 0;
+		while (i < len_new)
+		{
+			if (i < (size_t)idx)
+				new_av[i] = ft_strdup(argv[i]);
+			else if (i <(size_t) idx + len_out)
+				new_av[i] = ft_strdup(splited[i - idx]);
+			else if (i - len_out + 1 < ft_stablen(argv))
+				new_av[i] = ft_strdup(argv[i - len_out + 1]);
+			i++;
+		}
+		ft_stabdel(&splited);
+	}
+	return (new_av);
+}
+
 int			replace_subshells(t_shell *shell, t_processes **proc)
 {
 	t_subshell	*ptr;
-	t_parser	*mem;
-
-	char		*output;
-	char		**outtab;
-	size_t		len_out;
-	size_t		len_new;
-
-	char		**new_av;
-	ssize_t 		i;
+	t_parser		*mem;
+	char				*output;
+	char				**av_ptr;
 
 	if ((*proc)->subshell && (*proc)->cmds && (*proc)->cmds->argv)
 	{
 		ptr = GET_NODE(list_last(&((*proc)->subshell->head)), t_subshell, head);
-
 		while (ptr)
 		{
 			mem = shell->parser;
 			shell->parser = NULL;
 			if (ptr->instring == NULL)
 			{
-				if ((output = ft_eval(shell, (*proc)->cmds->argv[ptr->idx])) != NULL)
+				if ((output = get_eval(shell, (*proc)->cmds->argv[ptr->idx])) != NULL)
 				{
-					output = ft_strtrim(output);
-					if ((outtab = ft_strsplit(output, '\n')) != NULL)
-					{
-						len_out = ft_stablen(outtab);
-						len_new = ft_stablen((*proc)->cmds->argv) + len_out;
-						new_av = ft_stabnew(len_new);
-						i = 0;
-						while (i < (ssize_t)len_new)
-						{
-							if (i < (ssize_t)ptr->idx)
-								new_av[i] = ft_strdup((*proc)->cmds->argv[i]);
-							else if ((size_t)i < ptr->idx + len_out)
-								new_av[i] = ft_strdup(outtab[i - (size_t)ptr->idx]);
-							else if (i - len_out + 1 < ft_stablen((*proc)->cmds->argv))
-								new_av[i] = ft_strdup((*proc)->cmds->argv[i - len_out + 1]);
-							i++;
-						}
-						ft_stabdel((&(*proc)->cmds->argv));
-						ft_stabdel(&(outtab));
-						ft_strdel(&output);
-						(*proc)->cmds->argv = new_av;
-					}
-					else
-						ft_strdel(&output);
+					av_ptr = (*proc)->cmds->argv;
+					(*proc)->cmds->argv = replace_normal(av_ptr, output, ptr->idx);
+					ft_stabdel(&av_ptr);
+					ft_strdel(&output);
 				}
-			} else
-			{
-					i = itab_len(ptr->instring);
-					while (--i >= 0)
-					{
-						char *code;
-						if ((code = ft_strsub((*proc)->cmds->argv[ptr->idx],
-									ptr->instring[i][0],
-									ptr->instring[i][1]- ptr->instring[i][0])
-								) != NULL)
-						{
-							if ((output = ft_eval(shell, code)) != NULL)
-							{
-								output = ft_strtrim(output);
-								ft_fdprintf(g_debug[1], "output from subshell: %s", output);
-								char *newstr = ft_strsub((*proc)->cmds->argv[ptr->idx],0,ptr->instring[i][0]);
-								char *newstr1 = ft_strsub((*proc)->cmds->argv[ptr->idx],
-									ptr->instring[i][0] + ft_strlen(code),
-									ft_strlen((*proc)->cmds->argv[ptr->idx]) -
-									(ptr->instring[i][0] + ft_strlen(code)));
-								newstr = ft_strjoinfree(newstr,ft_strjoinfree(output,newstr1));
-								ft_strdel(&((*proc)->cmds->argv[ptr->idx]));
-								(*proc)->cmds->argv[ptr->idx] = newstr;
-							}
-						else
-							{ft_fdprintf(2,"ERRR\n");
-							return (1);}}
-					}
-			}
+			} else if (replace_instring(shell, ptr, proc) == 1)
+					return (1);
 			destroy_parser(&(shell->parser));
 			shell->parser = mem;
 			if (ptr->head.prev == NULL)
@@ -225,7 +260,7 @@ void		ft_execprocess(t_jobs **jobs, t_processes *p, t_shell *sh,
 
 	if (p->subshell != NULL)
 		replace_subshells(sh, &p);
-	if (p && p->cmds && p->cmds->argv)
+	if (p && p->cmds && p->cmds->argv && p->cmds->argv[0])
 	{
 		(g_debug[0]) ? ft_fdprintf(g_debug[1], "Process: %s\n", *p->cmds->argv) : 1;
 		if (!(isbuiltin = ft_isbuiltin(*p->cmds->argv)))

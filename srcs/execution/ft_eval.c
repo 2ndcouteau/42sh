@@ -6,7 +6,7 @@
 /*   By: nboulaye <nboulaye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/22 18:00:29 by nboulaye          #+#    #+#             */
-/*   Updated: 2017/04/07 21:03:52 by nboulaye         ###   ########.fr       */
+/*   Updated: 2017/04/08 19:39:08 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,11 @@ static char		*fork_n_eval(t_shell *shell)
 
 char			*ft_eval(t_shell *shell, char *code)
 {
-	char	*out;
-	int		*status;
+	// char	*out;
+	// int		*status;
 
-	status = NULL;
-	out = NULL;
+	// status = NULL;
+	// out = NULL;
 	if (shell->parser == NULL)
 		if (!(shell->parser = new_parser(shell->options)))
 			return (NULL);

@@ -6,7 +6,7 @@
 /*   By: amoreilh <amoreilh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 15:17:26 by amoreilh          #+#    #+#             */
-/*   Updated: 2017/04/10 18:03:20 by qrosa            ###   ########.fr       */
+/*   Updated: 2017/04/10 21:04:38 by qrosa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ char	is_ml_fct(t_shell *sh, t_input *input, char **ptr, char *new)
 				: ft_strjoinfree((*ptr), new);
 		if (!(*ptr))
 			return (return_term_resetterm(sh, 1));
+		return (return_term_resetterm(sh, 0));
 	}
 	return (return_term_resetterm(sh, 2));
 }
