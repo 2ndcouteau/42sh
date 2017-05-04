@@ -6,7 +6,7 @@
 /*   By: amoreilh <amoreilh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/21 17:18:15 by amoreilh          #+#    #+#             */
-/*   Updated: 2017/02/18 17:15:12 by nboulaye         ###   ########.fr       */
+/*   Updated: 2017/04/27 18:49:34 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,17 @@ void		ft_getmatchforlder(t_starmatch *match)
 	}
 }
 
+t_starmatch	*getword_suite(t_starmatch *match, char *line, int wstart,
+	int wend)
+{
+	match->word = ft_strsub(line, wstart, (wend - wstart));
+	if (g_debug[0])
+		ft_fdprintf(g_debug[1], "\nmatch->word={%s}\n", match->word);
+	match->wordlen = (wend - wstart);
+	match->wordpos = wstart;
+	return (match);
+}
+
 t_starmatch	*ft_getword(int pos, char *line, t_input *input)
 {
 	int			wstart;
@@ -51,16 +62,12 @@ t_starmatch	*ft_getword(int pos, char *line, t_input *input)
 		wstart--;
 	while (wend <= input->bufposmax && !(ft_isspace(line[wend])))
 		wend++;
-	ft_fdprintf(g_debug[1], "\ninput->prompt2len = %d wend = %d, wstart= %d\n"
-		, input->prompt2len, wend, wstart);
+	if (g_debug[0])
+		ft_fdprintf(g_debug[1],
+			"\ninput->prompt2len = %d wend = %d, wstart= %d\n"
+			, input->prompt2len, wend, wstart);
 	if (wend - (++wstart) > 0)
-	{
-		match->word = ft_strsub(line, wstart, (wend - wstart));
-		ft_fdprintf(g_debug[1], "\nmatch->word={%s}\n", match->word);
-		match->wordlen = (wend - wstart);
-		match->wordpos = wstart;
-		return (match);
-	}
+		return (getword_suite(match, line, wstart, wend));
 	free(match);
 	return (NULL);
 }

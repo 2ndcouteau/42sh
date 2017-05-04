@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/22 17:42:29 by ljohan            #+#    #+#             */
-/*   Updated: 2017/02/20 11:26:11 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/04/27 21:44:41 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		builtin_set(t_shell *shell, char **argv)
 			ft_strnew(0), &free));
 	else if (len == 3)
 	{
-		if (check_varname_format(argv[1]))
+		if (!check_varname_format(argv[1]))
 		{
 			ft_fdprintf(2, "set: bad varname format");
 			return (1);

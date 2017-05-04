@@ -48,14 +48,13 @@ typedef struct	s_help
 /*
 **	Current Command
 */
-typedef struct			s_cmd
+typedef struct	s_cmd
 {
-	char				**split_line;
-	size_t				size_split_line;
-	size_t				error_nbr;
-	char				*error_name;
-}						t_cmd;
-
+	char		**split_line;
+	size_t		size_split_line;
+	size_t		error_nbr;
+	char		*error_name;
+}				t_cmd;
 
 int				ft_help(char **args);
 t_help			*new_help(char *name, char *help, char *doc);
@@ -113,18 +112,23 @@ int				convert_hex_octal_to_char(char *str, int i);
 /*
 **	CD Builtins Functions
 */
-void			cd_create_path_name(t_cmd *current_cmd, t_dict *e, t_opt **cd_opt, char **current_pwd);
-bool			cd_check_valid_file(t_cmd *current_cmd, char **current_pwd, char *name);
+void			cd_create_path_name(t_cmd *current_cmd, t_dict *e,
+					t_opt **cd_opt, char **current_pwd);
+bool			cd_check_valid_file(t_cmd *current_cmd,
+					char **current_pwd, char *name);
 void			cd_set_error(t_cmd *current_cmd, char *name, int nbr);
 int				cd_check_new_path(char *new_path);
 void			cd_oldpwd(t_cmd *current_cmd, t_dict *e, char **current_pwd);
-void			cd_home(t_cmd *current_cmd, t_dict *e, char **current_pwd, char *new_path);
-void			cd_relative_path(t_cmd *current_cmd, char **current_pwd, char *new_path);
-void			cd_absolute_path(t_cmd *current_cmd, char **current_pwd, char *new_path);
+void			cd_home(t_cmd *current_cmd, t_dict *e,
+					char **current_pwd, char *new_path);
+void			cd_relative_path(t_cmd *current_cmd,
+					char **current_pwd, char *new_path);
+void			cd_absolute_path(t_cmd *current_cmd,
+					char **current_pwd, char *new_path);
 void			cd_swap_pwd_env(t_dict *e, char **current_pwd, t_opt **cd_opt);
 void			cd_clean_path(char **current_pwd);
 bool			cd_add_end_path(char **current_pwd, char *add_elem,
-	int pwd_len);
+					int pwd_len);
 void			cd_print_error(int error, char *name);
 char			cd_check_typefile(mode_t mode);
 

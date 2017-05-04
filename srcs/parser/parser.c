@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 13:33:57 by ljohan            #+#    #+#             */
-/*   Updated: 2017/02/28 22:44:01 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/04/13 19:04:28 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ t_parser	*new_parser(t_options *opts)
 		return (NULL);
 	}
 	p->last_cmd = p->jobs->process->cmds;
-
 	p->idx = 0;
 	p->errmess = NULL;
 	p->opts = opts;
 	p->first_word = 1;
+	p->aliases_done = 0;
 	p->eof = 0;
 	p->merge = 1;
 	return (p);
@@ -54,7 +54,7 @@ void		destroy_parser(t_parser **p)
 		destroy_states(&((*p)->states));
 	if ((*p)->jobs != NULL)
 		destroy_jobs(&((*p)->jobs));
-	free(*p);
+	ft_memdel((void **)&*p);
 	(*p) = NULL;
 }
 
@@ -94,6 +94,6 @@ void		handle_aliases(t_parser *p, char *key, char *alias)
 	post = ft_strsub(p->orig, p->idx + lk, ft_strlen(p->orig));
 	ft_strdel(&(p->orig));
 	p->orig = ft_strjoin3(pre, alias, post);
-	free(post);
-	free(pre);
+	ft_memdel((void **)&post);
+	ft_memdel((void **)&pre);
 }

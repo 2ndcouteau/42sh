@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/22 16:25:23 by ljohan            #+#    #+#             */
-/*   Updated: 2017/02/18 17:14:26 by nboulaye         ###   ########.fr       */
+/*   Updated: 2017/04/25 22:29:40 by nboulaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,22 @@ void			push_cell2(t_cell **cells, t_cell *cell)
 	}
 }
 
+void			dict_set_poped(t_cell *poped, t_cell **cells, t_cell *cell)
+{
+	if (poped == (*cells))
+	{
+		list_replace_one(&(poped->head), &(cell->head));
+		(*cells) = cell;
+		del_cell(&poped);
+	}
+	else
+	{
+		poped->del_value(poped->value);
+		poped->value = ft_strdup(cell->value);
+		del_cell(&cell);
+	}
+}
+
 void			dict_set(t_dict *dict, t_cell *cell)
 {
 	t_cell	*poped;
@@ -35,19 +51,7 @@ void			dict_set(t_dict *dict, t_cell *cell)
 			(void*)cell->key, &cmp_cell_keys)) != NULL)
 		poped = GET_NODE(tmp, t_cell, head);
 	if (poped)
-	{
-		if (poped == (*cells))
-		{
-			list_replace_one(&(poped->head), &(cell->head));
-			(*cells) = cell;
-		}
-		else
-		{
-			push_cell2(cells, cell);
-			list_pop_one(&(poped->head));
-		}
-		del_cell(&poped);
-	}
+		dict_set_poped(poped, cells, cell);
 	else
 		push_cell2(cells, cell);
 }

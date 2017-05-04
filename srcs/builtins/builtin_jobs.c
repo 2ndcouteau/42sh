@@ -6,7 +6,7 @@
 /*   By: nboulaye <nboulaye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/28 22:55:14 by nboulaye          #+#    #+#             */
-/*   Updated: 2017/01/19 12:49:32 by nboulaye         ###   ########.fr       */
+/*   Updated: 2017/04/27 18:53:31 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ int			builtin_jobs(t_jobs **bg_jobs, char **argv)
 	while (++argv && *argv && flag)
 	{
 		flag = chk_flag_jobs(*argv);
-		ft_fdprintf(g_debug[1], "flag = %b, *arg = %s\n", flag, *argv);
+		if (g_debug[0])
+			ft_fdprintf(g_debug[1], "flag = %b, *arg = %s\n", flag, *argv);
 	}
 	idx_process = 0;
 	if (!bg_jobs || !*bg_jobs)

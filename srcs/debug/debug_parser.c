@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/09 14:51:13 by ljohan            #+#    #+#             */
-/*   Updated: 2017/02/28 19:21:46 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/04/12 17:04:19 by qrosa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ static char	*human_state_suite(int state)
 		return ("pipe");
 	else if (state == ST_ONELINE)
 		return ("oneline");
-	// else if (state == ST_POSTPIPE)
-	// 	return ("postpipe");
 	else if (state == ST_SUBSHELL)
 		return ("subshell");
 	else if (state == ST_REDIR)
@@ -34,8 +32,6 @@ static char	*human_state_suite(int state)
 		return ("setvar");
 	else if (state == ST_QUOTE)
 		return ("quote");
-	// else if (state == ST_CONTINUE)
-	// 	return ("continue");
 	else
 		return ("unreconized");
 }

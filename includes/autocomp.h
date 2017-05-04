@@ -42,7 +42,8 @@ typedef struct	s_autocomp
 }				t_autocomp;
 
 void			ft_initstruct(t_input *input, t_shell *sh);
-char			*ft_initreadline(t_input *input, t_shell *sh, t_autocomp *autoc);
+char			*ft_initreadline(t_input *input, t_shell *sh,
+					t_autocomp *autoc);
 
 void			ft_getlistsize(t_autocomp *autoc, t_input *input);
 void			ft_folderorglob(t_autocomp *autoc, t_input *input);
@@ -51,19 +52,17 @@ int				ft_insertmatch(char *wd, t_starmatch *match, int p,
 	t_input *input);
 void			ft_getmatchforlder(t_starmatch *match);
 
-// char			*ft_ctrldc(char *buf, t_shell *sh, t_input *input,
-// 	t_autocomp *autoc);
-
-int				linedit_inputkeyhook(t_input *input, t_autocomp *autoc, char *buf);
+int				linedit_inputkeyhook(t_input *input, t_autocomp *autoc,
+					char *buf);
 int				linedit_command_cursor(t_input *input, long int *buff_convert);
 int				linedit_command_edition(t_input *input, long int *buff_convert);
 
 int				ft_endgetlineloop(t_shell *sh, t_input *input,
-	t_autocomp *autoc);
+					t_autocomp *autoc);
 void			getline_put_line(t_input *input, char *buf, t_shell *sh,
-	t_autocomp *autoc);
+					t_autocomp *autoc);
 int				getline_loop(t_shell *sh, t_input *input, char *buf,
-	t_autocomp *autoc);
+					t_autocomp *autoc);
 
 void			ft_printbuf(t_input *input, t_autocomp *autoc);
 int				ft_isfirstword(t_input *input, char *line);
@@ -76,4 +75,5 @@ int				comp_autocomp(t_input *input, t_autocomp *autoc);
 void			ft_dispcomp(t_autocomp *comp, t_input *input);
 t_compnode		*ft_makecompnode(char *name);
 int				linedit_clear(t_input *input, t_autocomp *autoc);
+
 #endif

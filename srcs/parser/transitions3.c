@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/22 16:15:51 by ljohan            #+#    #+#             */
-/*   Updated: 2017/02/23 12:33:25 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/04/12 21:04:18 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,3 @@ int		transition_bg(t_parser *p)
 	pop_state(&(p->states));
 	return (0);
 }
-
-// int		transition_postpipe(t_parser *p)
-// {
-// 	int	ret;
-//
-// 	if ((p->part == NULL || ft_strcmp(p->part, "") == 0))
-// 	{
-// 		push_state(&(p->states), ST_ONELINE);
-// 		return (1);
-// 	}
-// 	pop_state(&(p->states));
-// 	if (*CURRENT(p) != '\\')
-// 	{
-// 		ft_printf("On En Est La\n");
-// 		merge_part(p);
-// 	}
-// 	ret = transition_normal(p);
-// 	return (ret);
-// }

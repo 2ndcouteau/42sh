@@ -22,11 +22,9 @@ int		transition_path(t_parser *p)
 int		transition_pipe(t_parser *p)
 {
 	char	*test;
-	// t_redir	*red;
 
 	test = forward_with(CURRENT(p), CS_BLANK);
 	pop_state(&(p->states));
-
 	test = forward_with(CURRENT(p), CS_BLANK);
 	if (*test == 0)
 	{
@@ -39,7 +37,6 @@ int		transition_pipe(t_parser *p)
 		push_state(&(p->states), ST_ERR);
 		return (1);
 	}
-	// push_state(&(p->states), ST_POSTPIPE);
 	return (0);
 }
 
@@ -47,7 +44,6 @@ int		transition_eoc(t_parser *p)
 {
 	p->idx++;
 	pop_state(&(p->states));
-	// p->first_word = 1;
 	return (0);
 }
 

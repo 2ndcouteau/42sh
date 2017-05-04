@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 18:04:29 by ljohan            #+#    #+#             */
-/*   Updated: 2017/01/20 18:09:06 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/04/14 17:18:04 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	heredoc_not_done(t_head *head, void *arg)
 
 	(void)arg;
 	red = GET_NODE(head, t_redir, head);
-	return (!red->heredoc_done);
+	return (red->rtype == HEREDOC && !red->heredoc_done);
 }
 
 t_redir		*get_current_redir(t_parser *p)

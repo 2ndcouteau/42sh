@@ -55,8 +55,8 @@ int		ft_stabupd(char ***stab, size_t idx, char *entry)
 
 size_t	ft_stablen(char *const *stab)
 {
-	size_t i;
-	
+	size_t	i;
+
 	if (!stab)
 		return (0);
 	i = 0;

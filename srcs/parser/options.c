@@ -12,6 +12,21 @@
 
 #include "shell.h"
 
+static void	init_shlvl(t_dict *env)
+{
+	char	*ptr;
+	char	*shlvl_str;
+
+	if ((ptr = ft_getenv(env, "SHLVL")))
+	{
+		shlvl_str = ft_itoa(ft_atoi(ptr) + 1);
+		ft_setenv(env, "SHLVL", shlvl_str);
+		ft_memdel((void **)&shlvl_str);
+	}
+	else
+		ft_setenv(env, "SHLVL", "1");
+}
+
 t_options	*new_options(int ac, char **av, char **env)
 {
 	t_options	*opts;
@@ -23,6 +38,7 @@ t_options	*new_options(int ac, char **av, char **env)
 	else
 		opts->fd = STDIN_FILENO;
 	opts->env = env2dict(env);
+	init_shlvl(opts->env);
 	if (opts->fd < 0)
 		destroy_options(&opts);
 	if (isatty(opts->fd))
@@ -51,6 +67,6 @@ void		destroy_options(t_options **opts)
 	if ((*opts)->aliases != NULL)
 		destroy_dict(&(*opts)->aliases);
 	close((*opts)->fd);
-	free(*opts);
+	ft_memdel((void **)&*opts);
 	(*opts) = NULL;
 }

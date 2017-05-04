@@ -20,7 +20,7 @@ static int	open_write_f_history(t_dict *env)
 
 	name = NULL;
 	fd = -1;
-	if ((home = ft_getenv(env, "HOME")) && *home)
+	if ((home = ft_getenv(env, "HOME")) && *home && *home == '/')
 		name = ft_strjoin(home, "/.42sh_history");
 	if (name)
 	{
@@ -28,7 +28,7 @@ static int	open_write_f_history(t_dict *env)
 			S_IROTH | S_IRGRP | S_IRUSR | S_IWUSR);
 		free(name);
 	}
-	if (fd == -1)
+	if (fd <= 2)
 		fd = open("/tmp/.42sh_history", O_WRONLY | O_CREAT | O_TRUNC,
 				S_IROTH | S_IRGRP | S_IRUSR | S_IWUSR);
 	return (fd);

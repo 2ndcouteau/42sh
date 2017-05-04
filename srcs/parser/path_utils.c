@@ -26,7 +26,7 @@ char	*ft_joinpath(const char *p0, const char *p1)
 	while (p1[0] == '/')
 		p1++;
 	ret = ft_strjoin(tmp, p1);
-	free(tmp);
+	ft_memdel((void **)&tmp);
 	return (ret);
 }
 
@@ -45,7 +45,7 @@ char	*expand_user(const char *path, t_dict *env)
 			return (home);
 		else
 		{
-			free(home);
+			ft_memdel((void **)&home);
 			return (ft_strdup(path));
 		}
 	}

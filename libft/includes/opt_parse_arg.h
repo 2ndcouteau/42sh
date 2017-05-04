@@ -10,14 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef OPT_PARSE_ARG
-# define OPT_PARSE_ARG
+#ifndef OPT_PARSE_ARG_H
+# define OPT_PARSE_ARG_H
 
 # include "libft.h"
 # include <stdbool.h>
 # include <unistd.h>
 # include <stdlib.h>
-
 
 /*
 *******************

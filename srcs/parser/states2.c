@@ -24,7 +24,7 @@ static void	del_state(t_head *head)
 	t_states	*state;
 
 	state = GET_NODE(head, t_states, head);
-	free(state);
+	ft_memdel((void **)&state);
 }
 
 void		destroy_states(t_states **states)

@@ -47,7 +47,7 @@ void			del_cell(t_cell **cell)
 			ft_strdel(&((*cell)->key));
 		if ((*cell)->del_value != NULL && (*cell)->value != NULL)
 			(*cell)->del_value((*cell)->value);
-		free((*cell));
+		ft_memdel((void **)&(*cell));
 		cell = NULL;
 	}
 }
@@ -62,7 +62,7 @@ t_dict			*new_dict(size_t dsize)
 		return (NULL);
 	if ((dct->cells = (t_cell**)ft_memalloc(sizeof(t_cell*) * dsize)) == NULL)
 	{
-		free(dct);
+		ft_memdel((void **)&dct);
 		return (NULL);
 	}
 	dct->size = dsize;

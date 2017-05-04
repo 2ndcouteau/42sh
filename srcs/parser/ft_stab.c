@@ -43,8 +43,8 @@ void	ft_stabdel(char ***stab)
 
 	i = -1;
 	while ((*stab)[++i])
-		free((*stab)[i]);
-	free((*stab));
+		ft_memdel((void **)&(*stab)[i]);
+	ft_memdel((void **)&(*stab));
 	*stab = NULL;
 }
 
@@ -61,7 +61,6 @@ int		ft_stabpush(char ***stab, char *entry)
 		len = ft_stablen((*stab));
 	if ((ret = (char **)ft_memalloc(sizeof(char*) * (len + 2))) == NULL)
 		return (-1);
-
 	ret[len + 1] = 0;
 	while ((*stab) != NULL && (*stab)[i])
 	{

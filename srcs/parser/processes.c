@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 13:37:01 by ljohan            #+#    #+#             */
-/*   Updated: 2017/02/24 15:31:13 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/04/10 20:52:22 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void		destroy_redir2(t_redir *red)
 	ft_strdel(&red->fdin);
 	ft_strdel(&red->arg);
 	ft_strdel(&red->heredoc);
-	free(red);
+	ft_memdel((void **)&red);
 }
 
 t_processes	*new_processes(void)
@@ -41,10 +41,11 @@ static void	del_process(t_head *head)
 	destroy_cmds(&(ptr->cmds));
 	if (ptr->subshell != NULL)
 	{
-		//ft_strdel(&(ptr->subshell->code));
-		free(ptr->subshell);
+		if (ptr->subshell->instring)
+			itab_del(&(ptr->subshell->instring));
+		ft_memdel((void **)&ptr->subshell);
 	}
-	free(ptr);
+	ft_memdel((void **)&ptr);
 	ptr = NULL;
 }
 

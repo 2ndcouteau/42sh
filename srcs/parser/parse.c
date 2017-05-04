@@ -11,18 +11,6 @@
 /* ************************************************************************** */
 
 #include "shell.h"
-//
-// char	*parse_postpipe(t_parser *p)
-// {
-// 	char	*part;
-// 	char	*tmp;
-//
-// 	p->idx += forward_with(CURRENT(p), CS_BLANK) - CURRENT(p);
-// 	tmp = forward_escape(CURRENT(p), CS_POSTPIPE);
-// 	part = ft_strsub(p->orig, p->idx, tmp - CURRENT(p));
-// 	p->idx += tmp - CURRENT(p);
-// 	return (part);
-// }
 
 char	*parse_quote(t_parser *p)
 {

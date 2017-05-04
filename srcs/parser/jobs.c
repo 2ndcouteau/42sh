@@ -29,7 +29,7 @@ static void	del_job(t_head *head)
 	{
 		destroy_processes(&(ptr->process));
 		ft_bzero((void*)&(ptr->head), sizeof(t_head));
-		free(ptr);
+		ft_memdel((void **)&ptr);
 	}
 	ptr = NULL;
 }

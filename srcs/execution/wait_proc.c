@@ -6,7 +6,7 @@
 /*   By: nboulaye <nboulaye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/28 22:55:14 by nboulaye          #+#    #+#             */
-/*   Updated: 2017/02/05 18:16:57 by nboulaye         ###   ########.fr       */
+/*   Updated: 2017/04/27 21:30:32 by nboulaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,26 @@ void		wait_process(t_processes *proc, t_jobs **jobs, t_jobs **bg_jobs
 				, t_shell *sh)
 {
 	if (g_debug[0])
-		print_wait_pid_debug(proc->pid, sh->status, *proc->cmds->argv, 1);
+		print_wait_pid_debug(proc->pid, proc->status, *proc->cmds->argv, 1);
 	if (*jobs && (*jobs)->flags == ST_BG)
 		return ((proc->pid == (*jobs)->pgid)) ?
 		(sav_stopped_jobs(bg_jobs, jobs, 0)) : ft_void();
-	if (((waitpid(proc->pid, &sh->status, WUNTRACED)) < 0)
+	if (((waitpid(proc->pid, &proc->status, WUNTRACED)) < 0)
 	&& ft_fdprintf(2, "\033[31mwaitpid error: %s\n\033[0m", *proc->cmds->argv))
 		exit(1);
-	if (proc->pid == (*jobs)->pgid && WIFSTOPPED(sh->status)
-	&& (WEXITSTATUS(sh->status) == SIGTSTP
-		|| WEXITSTATUS(sh->status) == SIGSTOP))
+	if (!proc->head.next)
+		sh->status = proc->status;
+	if (proc->pid == (*jobs)->pgid && WIFSTOPPED(proc->status)
+	&& (WEXITSTATUS(proc->status) == SIGTSTP
+		|| WEXITSTATUS(proc->status) == SIGSTOP))
 		sav_stopped_jobs(bg_jobs, jobs, 1);
-	else if (sh->status && sh->status != 13 && sh->status != 2
-	&& sh->status < 28)
+	else if (proc->status && proc->status != 13 && proc->status != 2
+	&& proc->status < 28)
 	{
 		ft_putstrnbr_fd("\t", proc->pid, 2);
-		chk_status(sh->status);
+		chk_status(proc->status);
 		printarg(proc, NULL, 1);
 	}
 	if (g_debug[0])
-		print_wait_pid_debug(proc->pid, sh->status, *proc->cmds->argv, 0);
+		print_wait_pid_debug(proc->pid, proc->status, *proc->cmds->argv, 0);
 }

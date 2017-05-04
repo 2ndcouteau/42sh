@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 17:01:16 by ljohan            #+#    #+#             */
-/*   Updated: 2017/02/18 19:31:27 by nboulaye         ###   ########.fr       */
+/*   Updated: 2017/04/27 23:26:02 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char		*get_str_hist(t_shell *sh, int idx, char *new_value, char i)
 			else
 				hist = (!(hist)->head.next) ? NULL :
 				GET_NODE(((hist)->head.next), t_history, head);
-	free(new_value);
+	ft_memdel((void **)&new_value);
 	if (hist && hist->value)
 		return (hist->value);
 	return (NULL);
@@ -64,7 +64,7 @@ static int		get_hist_idx(t_shell *sh, t_parser *p, char *key)
 	{
 		handle_aliases(p, key, str);
 		ft_fdprintf(1, "%s\n", p->orig);
-		free(key);
+		ft_memdel((void **)&key);
 	}
 	return (str) ? (0) : (1);
 }
@@ -79,20 +79,21 @@ char			*handle_first_word(t_shell *sh, t_parser *p)
 	idx = FWD(CURRENT(p)) - CURRENT(p) + p->idx;
 	if (!(p->first_word = 0) && p->orig[idx] == '=')
 	{
-		ret = handle_normal(sh, p);
+		ret = implicit_parse_one(sh, p);
 		add_state(&(p->states), ST_SETVAR);
 		return (ret);
 	}
 	else if ((key = ft_strsub(p->orig, p->idx, idx - p->idx)) != NULL &&
-	(cell = dict_get(p->opts->aliases, key)) != NULL)
+	(cell = dict_get(p->opts->aliases, key)) != NULL && !p->aliases_done)
 	{
-		ft_fdprintf(2,"handle_aliases\n");
 		handle_aliases(p, key, cell->value);
-		free(key);
+		p->aliases_done = 1;
+		ft_memdel((void **)&key);
 		return (NULL);
 	}
 	else if (key[0] == '!' && key[1] && !get_hist_idx(sh, p, key))
 		return (NULL);
-	free(key);
+	ft_memdel((void **)&key);
+	p->aliases_done = 0;
 	return (handle_normal(sh, p));
 }

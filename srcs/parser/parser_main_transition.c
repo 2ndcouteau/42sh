@@ -52,8 +52,6 @@ char		transition(t_shell *shell, t_parser *p)
 		return (transition_bg(p));
 	else if (STATE(p) == ST_BG)
 		return (transition_bg(p));
-	// else if (STATE(p) == ST_POSTPIPE)
-	// 	return (transition_postpipe(p));
 	else if (STATE(p) == ST_VAR)
 		return (transition_var(p));
 	else if (STATE(p) == ST_PATH)

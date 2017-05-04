@@ -6,7 +6,7 @@
 /*   By: amoreilh <amoreilh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 15:17:26 by amoreilh          #+#    #+#             */
-/*   Updated: 2017/04/10 21:04:38 by qrosa            ###   ########.fr       */
+/*   Updated: 2017/04/13 19:58:28 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int		ft_endgetlineloop(t_shell *sh, t_input *input, t_autocomp *autoc)
 	term_resetterm(sh);
 	ft_strdel(&I->prompt2);
 	ft_strdel(&I->line);
+	ft_strdel(&I->clipboard);
 	return (1);
 }
 

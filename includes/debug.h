@@ -29,6 +29,6 @@ void	debug_parser(t_parser *parser);
 void	debug_flags(int flag);
 void	debug_dict(t_dict *dict);
 char	*human_state(int state);
-void  debug_process(t_processes *proc);
+void	debug_process(t_processes *proc);
 
 #endif

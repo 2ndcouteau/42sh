@@ -6,7 +6,7 @@
 /*   By: nboulaye <nboulaye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/28 22:55:14 by nboulaye          #+#    #+#             */
-/*   Updated: 2017/02/20 11:23:06 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/04/27 23:33:18 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		check_varname_format(char *varname)
 		return (0);
 	while (*varname)
 	{
-		if (!(ft_isalnum(*varname) || *varname == '_'))
+		if (!(ft_isalnum(*varname) || *varname == '_') || *varname == '=')
 			return (0);
 		varname++;
 	}

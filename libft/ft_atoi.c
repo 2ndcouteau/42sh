@@ -13,7 +13,6 @@
 #include "libft.h"
 #include <stdio.h>
 
-
 long int		ft_atoi(const char *str)
 {
 	unsigned long int	absnbr;

@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/06 20:28:07 by ljohan            #+#    #+#             */
-/*   Updated: 2017/03/21 18:51:04 by yoko             ###   ########.fr       */
+/*   Updated: 2017/04/12 17:44:04 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ struct			s_shell
 	t_history	*history;
 	t_jobs		*bg_jobs;
 	t_parser	*parser;
-	char		script;// (0 || 1)
+	char		script;
 
 	int			status;
 };
@@ -87,6 +87,7 @@ void			destroy_shell(t_shell **shell);
 
 char			*ft_strjoinfree(char *s0, char *s1);
 char			*ft_strjoin3(char *s0, char *s1, char *s2);
+
 /*
 ** signals
 */
@@ -100,9 +101,10 @@ void			handle_sigint(int sig);
 int				ft_charat(char *str, char c);
 int				ft_rcharat(char *str, char c);
 int				ft_isfile(char *path);
+int				ft_isdir(char *path);
 int				ft_exists(char *path);
 
-char			*expand_user(const char *path);
+char			*expand_user(const char *path, t_dict *env);
 
 /*
 ** ft_stab
@@ -116,21 +118,12 @@ int				ft_stabpush(char ***stab, char *entry);
 int				ft_stabpop(char ***stab, size_t idx);
 int				ft_stabupd(char ***stab, size_t idx,
 					char *entry);
+void			debug(int n, char *path);
 
 /*
 ** script
 */
 
 int				script_loop(t_shell *sh);
-
-/*
-** tests
-*/
-
-void			test_dict(t_shell *shell, int ac, char **av, char **env);
-void			test_idx(t_shell *shell, int ac, char **av, char **env);
-// void			test_eval(t_shell *shell, int ac, char **av, char **env);
-
-# define TEST(name, shell, ac, av, env) (test_##name(shell, ac, av, env))
 
 #endif

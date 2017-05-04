@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/22 16:26:01 by ljohan            #+#    #+#             */
-/*   Updated: 2017/01/23 10:26:47 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/04/25 21:11:11 by nboulaye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void			destroy_dict(t_dict **dict)
 			list_iter(&(cell->head), &del_head_cell);
 		i++;
 	}
-	free((*dict)->cells);
-	free((*dict));
+	ft_memdel((void **)&(*dict)->cells);
+	ft_memdel((void **)&(*dict));
 	(*dict) = NULL;
 }
 

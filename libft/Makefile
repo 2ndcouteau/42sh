@@ -120,7 +120,7 @@ WFLAGS = -Wall -Werror -Wextra
 
 LFLAGS = -L libft/ -lft
 
-CC = gcc -g -ggdb
+CC = gcc #-g -ggdb
 
 OBJ = $(SRC:.c=.o)
 

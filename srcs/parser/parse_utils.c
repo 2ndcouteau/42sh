@@ -19,7 +19,7 @@ void	update_part(t_parser *p, char *part)
 	if (p->part == NULL)
 	{
 		p->part = ft_strdup(part);
-		free(part);
+		ft_memdel((void **)&part);
 	}
 	else
 		p->part = ft_strjoinfree(p->part, part);
@@ -33,7 +33,8 @@ void	merge_part(t_parser *p)
 	{
 		if (p->part == NULL || (ft_strcmp(p->part, "") == 0))
 			return ;
-		cmd = get_last_cmd(get_last_process(get_last_job(p->jobs)->process)->cmds);
+		cmd =
+		get_last_cmd(get_last_process(get_last_job(p->jobs)->process)->cmds);
 		ft_stabpush(&(cmd->argv), p->part);
 		ft_strdel(&(p->part));
 	}

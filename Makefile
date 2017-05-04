@@ -1,7 +1,7 @@
 NAME = 42sh
 
 CC = gcc
-CCDBGF = -g -ggdb
+CCDBGF = #-g -ggdb
 CCF = -Wextra -Werror -Wall
 
 SRCS_NAMES = main.c script.c \
@@ -46,19 +46,21 @@ SRCS_NAMES = main.c script.c \
 			parser/last_elem.c parser/new_elem.c parser/current_redir.c parser/transitions.c \
 			parser/transitions2.c parser/transitions3.c parser/parse.c parser/heredoc.c \
 			parser/transition_string.c parser/handle_pipe.c parser/onemore.c \
-			parser/handle_setvar.c parser/parse_sub.c parser/subshell.c parser/itab.c\
+			parser/handle_setvar.c parser/parse_sub.c parser/subshell.c parser/itab.c \
+			parser/parse2.c parser/states2.c \
 			\
 			execution/chk_status.c execution/exec_proc.c \
 			execution/wait_proc.c execution/creat_pipe.c execution/redir.c \
 			execution/history.c execution/get_history.c execution/creat_history.c \
 			execution/jobs_ctrl.c execution/wait_bg.c \
 			execution/redirection.c \
-			execution/help_set.c execution/help_set2.c execution/help_set3.c\
+			execution/help_set.c execution/help_set2.c execution/help_set3.c \
 			execution/environ.c execution/help.c execution/chk_if_builtin.c \
-			execution/exec_jobs.c execution/ft_eval.c \
+			execution/exec_jobs.c execution/ft_eval.c execution/readcmd.c \
+			execution/exec_sub_proc.c execution/exec_sub_proc2.c execution/child_eval.c \
 			\
-			debug/debug_parser.c debug/debug_parser2.c parser/parse2.c parser/states2.c \
-			debug/debug_dicts.c
+			debug/debug_parser.c debug/debug_parser2.c debug/debug_process.c \
+			debug/debug_dicts.c debug/activ_debug.c
 
 SRCS_PATH = ./srcs/
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_NAMES))
@@ -106,19 +108,11 @@ $(OBJS_PATH)%.o: $(SRCS_PATH)%.c
 	@mkdir $(OBJS_PATH) $(OBJS_PATH)parser $(OBJS_PATH)linedit $(OBJS_PATH)debug $(OBJS_PATH)execution $(OBJS_PATH)builtins $(OBJS_PATH)builtins/echo $(OBJS_PATH)builtins/cd 2> /dev/null || echo "" > /dev/null
 	@$(CC) $(CCDBGF) -I $(INC) -I $(FT_INC_PATH) -o $@ -c $<
 
-
 $(NAME): $(OBJS) $(INCLUDES)
 	@echo "$(cfyel)making:$(cfcya) libft$(cfend)"
 	@make -C $(FT_PATH)
 	@echo "$(cfyel)making:$(cfcya) 42sh$(cfend)"
 	$(CC) $(CCDBGF) $(CCF) -o $(NAME) $(SRCS) -I $(INC) -I $(FT_INC_PATH) -L$(FT_PATH) -lft -ltermcap
-
-test : $(OBJS) $(INC)
-	@echo "$(cfyel)making:$(cfcya) libft$(cfend)"
-	@make -C $(FT_PATH)
-	@echo "$(cfyel)making:$(cfcya) 42sh$(cfend)"
-	$(CC) $(CCDBGF) $(CCF) -DFT_TEST=1 -o $(NAME) $(SRCS) -I $(INC) -I $(FT_INC_PATH) -L$(FT_PATH) -lft -ltermcap
-
 
 clean:
 	@make clean -C $(FT_PATH)

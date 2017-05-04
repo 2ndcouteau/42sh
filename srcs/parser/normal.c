@@ -24,36 +24,35 @@ char		*parse_normal(t_parser *p)
 	return (part);
 }
 
-//int 		chk_comments(t_parser *p)
-//{
-//	if (CURRENT(p) && CURRENT(p)[0] == '#')
-//	{
-//		p->idx += ft_strlen(CURRENT(p));
-//		return (1);
-//	}
-//	return (0);
-//}
-
 char		*handle_normal(t_shell *sh, t_parser *p)
 {
 	t_redir	*red;
 
 	p->idx += forward_with(CURRENT(p), CS_BLANK) - CURRENT(p);
-//	if (chk_comments(p))
-//		return (parse_normal(p));
 	if (p->first_word)
 		return (handle_first_word(sh, p));
 	if ((red = try_redir(sh, p)) != NULL)
 	{
-		// if (STATE(p) != ST_CONTINUE) NOTE onemore like
-		// {
-			debug_redir(red);
-			merge_redir(p, red);
-		// }
+		debug_redir(red);
+		merge_redir(p, red);
 		return (NULL);
 	}
 	else
 		return (parse_normal(p));
+}
+
+static void	transition_normal_suite2(t_parser *p)
+{
+	if (*CURRENT(p) == '`' && ++p->idx)
+	{
+		merge_part(p);
+		push_state(&p->states, ST_SUBSHELL);
+	}
+	else
+	{
+		merge_part(p);
+		push_state(&(p->states), ST_PIPE);
+	}
 }
 
 static int	transition_normal_suite(t_parser *p)
@@ -75,16 +74,8 @@ static int	transition_normal_suite(t_parser *p)
 		push_state(&p->states, ST_BG);
 	else if (*CURRENT(p) == '~')
 		push_state(&p->states, ST_PATH);
-	else if (*CURRENT(p) == '`' && ++p->idx)
-	{
-		merge_part(p);
-		push_state(&p->states, ST_SUBSHELL);
-	}
-	else if (*CURRENT(p) == '|')
-	{
-		merge_part(p);
-		push_state(&(p->states), ST_PIPE);
-	}
+	else if (*CURRENT(p) == '`' || *CURRENT(p) == '|')
+		transition_normal_suite2(p);
 	else
 		return (0);
 	return (1);

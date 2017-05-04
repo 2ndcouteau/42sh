@@ -14,9 +14,8 @@
 
 int		transition_string_suite(t_parser *p)
 {
-	if (*CURRENT(p) == '$')
+	if (*CURRENT(p) == '$' && (p->idx++ || 1))
 	{
-		p->idx++;
 		push_state(&p->states, ST_VAR);
 		return (0);
 	}

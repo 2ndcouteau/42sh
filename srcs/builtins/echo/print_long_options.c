@@ -21,7 +21,7 @@ railing newline\n  -e		enable interpretation of backslash escapes\n  -E\
 play this help and exit\n  --version	output version information and exit\n\n\
 If -e is in effect, the following sequences are recognized:\n\n  \\\\ 	backsla\
 sh\n  \\a	alert (BEL)\n  \\b	backspace\n  \\c 	produce no further output\n\
-  \\e	escape\n  \\f 	form feed\n  \\n 	new line\n  \\r 	carriage return\
+\\e	escape\n  \\f 	form feed\n  \\n 	new line\n  \\r 	carriage return\
 \n  \\t 	horizontal tab\n  \\v 	vertical tab\n  \\0NNN	byte with octal val\
 ue NNN (1 to 3 digits)\n  \\xHH	byte with hexadecimal value HH (1 to 2 digits)"
 );

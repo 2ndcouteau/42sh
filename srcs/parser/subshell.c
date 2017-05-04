@@ -23,7 +23,7 @@ t_subshell	*new_subshell(int idx)
 	return (sub);
 }
 
-int					add_subshell_idx(t_subshell **sub, int idx)
+int			add_subshell_idx(t_subshell **sub, int idx)
 {
 	t_subshell	*new;
 

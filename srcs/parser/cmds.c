@@ -27,7 +27,7 @@ static void	del_cmd(t_head *head)
 	ptr = GET_NODE(head, t_cmds, head);
 	if (ptr->argv != NULL)
 		ft_stabdel(&(ptr->argv));
-	free(ptr);
+	ft_memdel((void **)&ptr);
 	ptr = NULL;
 }
 

@@ -17,11 +17,11 @@
 # include "dict.h"
 # include "cmds.h"
 
-typedef struct	s_subshell	t_subshell;
-struct	s_subshell
+typedef struct s_subshell	t_subshell;
+struct			s_subshell
 {
-	int					idx;
-	int					**instring;
+	int			idx;
+	int			**instring;
 	t_head		head;
 };
 

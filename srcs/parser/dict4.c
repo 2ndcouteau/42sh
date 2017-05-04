@@ -14,7 +14,7 @@
 
 void	del_str_value(void *val)
 {
-	free(val);
+	ft_memdel((void **)&val);
 }
 
 t_dict	*env2dict(char **env)

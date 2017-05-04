@@ -6,7 +6,7 @@
 /*   By: ljohan <ljohan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 12:13:42 by ljohan            #+#    #+#             */
-/*   Updated: 2017/02/28 23:24:52 by ljohan           ###   ########.fr       */
+/*   Updated: 2017/04/27 23:04:43 by ljohan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct	s_parser
 	char		*errmess;
 	char		eof;
 	char		merge;
+	char		aliases_done;
 }				t_parser;
 
 # define CURRENT(parser) (&(parser->orig[parser->idx]))
@@ -49,7 +50,6 @@ enum {
 	ST_BG,
 	ST_REDIR,
 	ST_PIPE,
-//	ST_POSTPIPE,
 	ST_EOC,
 	ST_EOF,
 	ST_ERR,
@@ -57,7 +57,6 @@ enum {
 	ST_PASS,
 	ST_SETVAR,
 	ST_QUOTE,
-	// ST_CONTINUE,
 	ST_SUBSHELL,
 	ST_ONEMORE,
 };
@@ -78,7 +77,6 @@ enum {
 # define CS_ESCAPE_PATH "\\ \"\t;$~|<>"
 # define CS_REDIR "0123456789><&"
 # define CS_SUBSHELL "\\`"
-// define CS_POSTPIPE " \n\t$\"\\;~|&<>"
 
 # define IS_BLANK(c) (ft_strchr(CS_BLANK, c) != NULL)
 # define IS_EOC(c) (c == 0 || ft_strchr(";|&", c) != NULL)
@@ -86,6 +84,7 @@ enum {
 /*
 ** struct_options
 */
+
 void			destroy_options(t_options **opts);
 t_options		*new_options(int ac, char **av, char **env);
 
@@ -96,6 +95,7 @@ t_options		*new_options(int ac, char **av, char **env);
 t_parser		*new_parser(t_options *opts);
 void			destroy_parser(t_parser **parser);
 int				reset_parser(t_parser **parser);
+
 /*
 ** parse line
 */
@@ -113,7 +113,7 @@ char			*forward_escape(char *str, const char *charset);
 ** main
 */
 
-void 			action(t_shell *sh);
+void			action(t_shell *sh);
 char			*implicit_parse_one(t_shell *sh, t_parser *p);
 
 /*
@@ -135,8 +135,7 @@ char			*handle_first_word(t_shell *sh, t_parser *p);
 */
 
 char			*ft_joinpath(const char *p0, const char *p1);
-char			*expand_user(const char *path);
-char			*parse_path(t_parser *p);
+char			*parse_path(t_parser *p, t_dict *env);
 
 /*
 ** parse utils
@@ -158,7 +157,6 @@ void			handle_setvar(t_shell *shell, t_parser *p);
 void			handle_pipe(t_parser *p);
 void			handle_heredoc(t_parser *p);
 
-
 /*
 ** transitions.c
 */
@@ -172,7 +170,6 @@ int				transition_escape(t_parser *p);
 int				transition_string(t_parser *p);
 int				transition_quote(t_parser *p);
 int				transition_heredoc(t_parser *p);
-// int				transition_postpipe(t_parser *p);
 int				transition_error(t_parser *p);
 int				transition_bg(t_parser *p);
 int				transition_var(t_parser *p);
@@ -184,7 +181,6 @@ int				transition_onemore(t_parser *p);
 ** parse.c
 */
 
-// char			*parse_postpipe(t_parser *p);
 char			*parse_quote(t_parser *p);
 char			*parse_string(t_parser *p);
 char			*parse_subshell(t_parser *p);
@@ -209,13 +205,15 @@ void			destroy_redir(t_redir **red);
 
 void			merge_redir(t_parser *p, t_redir *red);
 
-void			parse(t_shell *shell);
-t_redir		*get_current_redir(t_parser *p);
+void			parse(t_shell *shell, char stop);
+t_redir			*get_current_redir(t_parser *p);
 char			*ft_stabjoin(char *sep, char **stab);
-t_redir		*try_redir(t_shell *sh, t_parser *p);
+t_redir			*try_redir(t_shell *sh, t_parser *p);
 void			handle_aliases(t_parser *p, char *key, char *alias);
 char			*ft_eval(t_shell *shell, char *code);
 
 int				itab_push(int ***itab, int i0, int i1);
 size_t			itab_len(int **itab);
+void			itab_del(int ***itab);
+
 #endif

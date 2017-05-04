@@ -74,7 +74,7 @@ void	destroy_redir(t_redir **red)
 		ft_strdel(&((*red)->arg));
 	if ((*red)->heredoc != NULL)
 		ft_strdel(&((*red)->heredoc));
-	free(*red);
+	ft_memdel((void **)&*red);
 	(*red) = NULL;
 }
 

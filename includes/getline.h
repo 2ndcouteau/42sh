@@ -84,7 +84,6 @@
 # define CAPS_ALT_RIGHT_LINUX		73887315483419
 # define CAPS_ALT_LEFT_LINUX		74986827111195
 
-
 typedef struct		s_starmatch
 {
 	char			*path;
@@ -96,35 +95,35 @@ typedef struct		s_starmatch
 
 typedef struct		s_input
 {
-	char			end;						// ??
+	char			end;
 	char			*line;
-	char			*current_line;				//	current_line save when used history
-	int				buffsize;					//	current size line_buffer (malloc)
-	char			multi;						//	bool multi-line
-	char			comp;						//	bool autocompletion mode
-	char			prompt;						//	prompt path
-	char			*prompt2;					//	prompt
-	char			cursbuff[12];				//	buff recup position cursor
-	char			*clipboard;					//	press papier
-	int				bufx;						//	position x relative prompt
+	char			*current_line;
+	int				buffsize;
+	char			multi;
+	char			comp;
+	char			prompt;
+	char			*prompt2;
+	char			cursbuff[12];
+	char			*clipboard;
+	int				bufx;
 	int				bufxmax;
-	int				bufposmax;					//	Max size current line
-	int				bufy;						//	position x relative prompt
-	int				bufpos;						//	actual position line relative prompt
-	int				termw;						//	term size
-	int				termh;						//	term size
-	int				cursx;						//	pos x cursor relative terminal
-	int				cursy;						//	pos y cursor relative terminal
-	int				prompt2len;					//	len prompt
-	int				savecursx;					//	position start of line relative terminal (get position cursor)
-	int				savecursy;					//	position start of line relative terminal (get position cursor)
-	int				nblines;					//	nb_lines
-	int				ret;						//	return mode
+	int				bufposmax;
+	int				bufy;
+	int				bufpos;
+	int				termw;
+	int				termh;
+	int				cursx;
+	int				cursy;
+	int				prompt2len;
+	int				savecursx;
+	int				savecursy;
+	int				nblines;
+	int				ret;
 }					t_input;
 
 void				ft_displaypromptline(t_input *input);
 void				creat_new_term_struct(struct termios *new,
-	struct termios *old);
+						struct termios *old);
 char				hist_comphist(t_input *input, t_shell *sh, char upndown);
 char				*ft_getbranch(void);
 void				ft_freematch(t_starmatch *match);
@@ -169,12 +168,10 @@ int					bridge_maj_down(t_input *input);
 
 int					ft_putc(int c);
 void				print_special_putstr_fd(char *str, int fd);
-// void				print_prompt(t_input *input);
 
 char				*ft_histsearch(t_input *input, t_shell *sh);
 int					put_stdout(char *c);
 char				event_loop(t_shell *sh, char **ptr);
-
 
 int						(*g_term_command_cursor[NB_TERM_COMMAND_CURSOR])
 															(t_input *input);

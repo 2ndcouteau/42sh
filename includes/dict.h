@@ -48,6 +48,7 @@ void			dict_iter(t_dict *dict, void (*fct)(t_head *));
 t_cell			*new_cell_wthout_malloc(char *key, void *value, size_t nb);
 void			dict_iter(t_dict *dict, void (*fct)(t_head *));
 
+t_head			*list_pop_last(t_head *head);
 void			dict_del(t_dict *dict, char *key);
 void			del_cell(t_cell **cell);
 void			del_str_value(void *val);
