@@ -1,20 +1,21 @@
 # 42sh
-This is the one. The best shell ever ! but in progress ...
+This is the one. The best shell ever ! Yes, after BASH or ZSH of course ;-
 
 This project is a good reproduction of a shell. We made it from scratch.
 
 The main improvements in comparison with my 21sh are:
 - Jobs control
 - Subshell \`\`
-- Globbing
+- Globbing Completion
 - Alias
-- Bang ! management
+- Bang History ! management
 - Dynamical completion
 - and history completion.
 - Pimp prompt
 
 **This is a group project.**
 
+**** 110/100 ****
 
 #### Builtins :
 
