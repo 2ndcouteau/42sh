@@ -15,8 +15,6 @@ The main improvements in comparison with my 21sh are:
 
 **This is a group project.**
 
-**** 110/100 ****
-
 #### Builtins :
 
 	jobs:
@@ -155,3 +153,5 @@ The main improvements in comparison with my 21sh are:
 
 	you can precise the tty of another shell for print debug output in.
 	./42sh debug=ttyname
+
+### Grade: 110/100
