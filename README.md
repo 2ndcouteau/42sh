@@ -147,7 +147,7 @@ The main improvements in comparison with my 21sh are:
 #### Finest Error Management:
 	For the majority of error, they have precise error return. 
 
-##### No leaks
+#### No leaks
 
 #### Debug mode:
 
